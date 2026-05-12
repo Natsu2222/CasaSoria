@@ -572,6 +572,9 @@ export const home: (args: HomeArgs) => RequiredDataFromCollectionSlug<'pages'> =
       {
         blockName: 'CTA',
         blockType: 'cta',
+        background: {
+          type: 'none',
+        },
         links: [
           {
             link: {

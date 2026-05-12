@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import type { Page } from '@/payload-types'
 
@@ -6,14 +6,18 @@ import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { LayoutSoriaBlock } from '@/blocks/LayoutSoria/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ProductsBlock } from '@/blocks/ProductsBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
+  layoutSoria: LayoutSoriaBlock,
   mediaBlock: MediaBlock,
+  productsBlock: ProductsBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -25,7 +29,7 @@ export const RenderBlocks: React.FC<{
 
   if (hasBlocks) {
     return (
-      <Fragment>
+      <div className="payload-blocks-root flex flex-col gap-24 md:gap-32" data-payload-blocks="">
         {blocks.map((block, index) => {
           const { blockType } = block
 
@@ -34,7 +38,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div className="payload-block-slot" key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>
@@ -43,7 +47,7 @@ export const RenderBlocks: React.FC<{
           }
           return null
         })}
-      </Fragment>
+      </div>
     )
   }
 

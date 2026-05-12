@@ -8,6 +8,8 @@ import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { Products } from './collections/Products'
+import { Reservations } from './collections/Reservations'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -60,9 +62,10 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
+      ...(shouldUseSSL(process.env.DATABASE_URL) ? { ssl: { rejectUnauthorized: false } } : {}),
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Products, Reservations, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,
@@ -90,3 +93,10 @@ export default buildConfig({
     tasks: [],
   },
 })
+
+function shouldUseSSL(databaseURL: string | undefined) {
+  if (!databaseURL) return false
+  const url = databaseURL.toLowerCase()
+  if (url.includes('localhost') || url.includes('127.0.0.1')) return false
+  return true
+}

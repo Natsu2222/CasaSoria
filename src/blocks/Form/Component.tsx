@@ -114,17 +114,27 @@ export const FormBlock: React.FC<
   )
 
   return (
-    <div className="container lg:max-w-[48rem]">
+    <div className="container lg:max-w-[42rem]">
       {enableIntro && introContent && !hasSubmitted && (
-        <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
+        <RichText
+          className="payload-block-prose mb-10 max-w-none lg:mb-14"
+          data={introContent}
+          enableGutter={false}
+        />
       )}
-      <div className="p-4 lg:p-6 border border-border rounded-[0.8rem]">
+      <div className="payload-block-grain relative isolate overflow-hidden rounded-[1.75rem] border border-[color-mix(in_oklch,var(--border)_65%,transparent)] bg-[color-mix(in_oklch,var(--payload-block-paper)_95%,transparent)] p-6 shadow-[var(--payload-block-shadow)] ring-1 ring-[var(--payload-block-ring)] md:p-10">
         <FormProvider {...formMethods}>
           {!isLoading && hasSubmitted && confirmationType === 'message' && (
-            <RichText data={confirmationMessage} />
+            <RichText className="payload-block-prose" data={confirmationMessage} />
           )}
-          {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-          {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
+          {isLoading && !hasSubmitted && (
+            <p className="payload-block-prose animate-pulse text-muted-foreground">Loading, please wait…</p>
+          )}
+          {error && (
+            <div className="payload-block-prose rounded-xl border border-destructive/35 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+              {`${error.status || '500'}: ${error.message || ''}`}
+            </div>
+          )}
           {!hasSubmitted && (
             <form id={formID} onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-4 last:mb-0">
@@ -151,7 +161,12 @@ export const FormBlock: React.FC<
                   })}
               </div>
 
-              <Button form={formID} type="submit" variant="default">
+              <Button
+                form={formID}
+                type="submit"
+                className="payload-block-display mt-2 rounded-full px-8 py-6 text-base tracking-wide shadow-[var(--payload-block-shadow)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:brightness-[1.03]"
+                variant="default"
+              >
                 {submitButtonLabel}
               </Button>
             </form>

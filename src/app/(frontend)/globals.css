@@ -123,6 +123,13 @@
   --success: oklch(78% 0.08 200deg);
   --warning: oklch(89% 0.1 75deg);
   --error: oklch(75% 0.15 25deg);
+  /* Editorial blocks palette (used by Payload blocks + nested RichText nodes) */
+  --payload-block-accent: oklch(48% 0.14 38deg);
+  --payload-block-accent-soft: oklch(94% 0.045 78deg);
+  --payload-block-ink: oklch(24% 0.03 65deg);
+  --payload-block-paper: color-mix(in oklch, var(--card) 92%, oklch(96% 0.03 85deg));
+  --payload-block-shadow: 0 28px 65px -28px oklch(22% 0.04 55deg / 0.38);
+  --payload-block-ring: oklch(22% 0.03 65deg / 0.08);
 }
 
 [data-theme='dark'] {
@@ -161,6 +168,12 @@
   --success: oklch(28% 0.1 200deg);
   --warning: oklch(35% 0.08 70deg);
   --error: oklch(45% 0.1 25deg);
+  --payload-block-accent: oklch(72% 0.11 48deg);
+  --payload-block-accent-soft: oklch(28% 0.03 70deg);
+  --payload-block-ink: oklch(94% 0.02 95deg);
+  --payload-block-paper: oklch(21% 0.02 75deg);
+  --payload-block-shadow: 0 26px 60px -26px oklch(0% 0 0deg / 0.55);
+  --payload-block-ring: oklch(100% 0 0deg / 0.06);
 }
 
 @theme inline {
@@ -221,4 +234,97 @@ html {
 html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
+}
+
+/* ── Payload blocks: editorial “casa” styling (frontend-design direction) ── */
+
+.payload-block-display {
+  font-family:
+    var(--font-payload-display),
+    Georgia,
+    'Times New Roman',
+    serif;
+  font-optical-sizing: auto;
+  font-variation-settings:
+    'SOFT' 48,
+    'WONK' 1;
+  color: var(--payload-block-ink);
+  letter-spacing: -0.02em;
+}
+
+.payload-block-prose {
+  font-family:
+    var(--font-payload-serif),
+    Georgia,
+    'Times New Roman',
+    serif;
+  font-optical-sizing: auto;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: color-mix(in oklch, var(--foreground) 92%, var(--payload-block-ink));
+}
+
+.payload-block-prose :where(h1, h2, h3, h4) {
+  font-family:
+    var(--font-payload-display),
+    Georgia,
+    serif;
+  font-variation-settings:
+    'SOFT' 40,
+    'WONK' 1;
+  letter-spacing: -0.03em;
+}
+
+.payload-block-paper-slab {
+  background: var(--payload-block-paper);
+  box-shadow: var(--payload-block-shadow);
+}
+
+.payload-blocks-root .payload-block-grain::before {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.65'/%3E%3C/svg%3E");
+}
+
+[data-theme='dark'] .payload-blocks-root .payload-block-grain::before {
+  opacity: 0.07;
+  mix-blend-mode: soft-light;
+}
+
+@keyframes payload-block-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .payload-blocks-root .payload-block-slot {
+    animation: payload-block-rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .payload-blocks-root .payload-block-slot:nth-child(1) {
+    animation-delay: 0ms;
+  }
+
+  .payload-blocks-root .payload-block-slot:nth-child(2) {
+    animation-delay: 45ms;
+  }
+
+  .payload-blocks-root .payload-block-slot:nth-child(3) {
+    animation-delay: 90ms;
+  }
+
+  .payload-blocks-root .payload-block-slot:nth-child(n + 4) {
+    animation-delay: 120ms;
+  }
 }
