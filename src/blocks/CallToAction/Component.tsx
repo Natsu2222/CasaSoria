@@ -134,20 +134,18 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({
     <div className="container">
       <div
         className={cn(
-          'payload-block-grain relative isolate overflow-hidden rounded-3xl border border-[color-mix(in_oklch,var(--border)_65%,transparent)] p-8 md:p-12 lg:p-14 flex flex-col gap-10 md:justify-between md:items-center ring-1 ring-[var(--payload-block-ring)] transition-[transform,box-shadow] duration-500 hover:-translate-y-0.5 hover:shadow-[var(--payload-block-shadow)]',
-          buttonsPosition === 'bottom' ? 'md:flex-col md:items-start' : 'md:flex-row',
+          'relative isolate overflow-hidden rounded-[2rem] border border-white/10 bg-black p-8 font-body text-white md:rounded-[2.5rem] md:p-12 lg:p-14',
+          'shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]',
+          'flex flex-col gap-10 md:items-center md:justify-between',
+          buttonsPosition === 'bottom' && 'md:flex-col md:items-stretch',
+          buttonsPosition !== 'bottom' && 'md:flex-row md:items-center',
           buttonsPosition === 'left' && 'md:flex-row-reverse',
-          bgType === 'none' && 'payload-block-paper-slab bg-[var(--payload-block-paper)]',
-          (bgType === 'image' ||
-            bgType === 'video' ||
-            bgType === 'solid' ||
-            bgType === 'gradient') &&
-            'text-white shadow-none hover:shadow-none hover:translate-y-0',
         )}
+        data-theme="dark"
         style={containerStyle}
       >
         {(bgType === 'image' || (bgType === 'video' && !!embedURL)) && (
-          <div className="absolute inset-0 -z-10">
+          <div className="pointer-events-none absolute inset-0 z-0 origin-center scale-[1.06]">
             {bgType === 'image' ? (
               <Media
                 className="absolute inset-0"
@@ -170,26 +168,26 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({
               />
             )}
             <div
-              className="absolute inset-0 bg-gradient-to-tr from-black/75 via-black/55 to-black/25"
-              style={{ opacity: Math.min(1, overlayOpacity + 0.08) }}
+              className="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/55 to-black/30"
+              style={{ opacity: Math.min(1, overlayOpacity + 0.1) }}
             />
           </div>
         )}
 
-        {bgType === 'none' ? (
-          <div className="pointer-events-none absolute inset-y-8 left-4 w-px rounded-full bg-[color-mix(in_oklch,var(--payload-block-accent)_85%,transparent)] opacity-90 max-md:hidden md:left-6" />
-        ) : null}
-
-        <div className="relative z-[1] max-w-[52rem] flex items-center">
+        <div className="relative z-[1] flex max-w-[52rem] flex-1 items-center">
           {richText && (
             <RichText
               className={cn(
-                'mb-0 payload-block-prose',
-                (bgType === 'image' ||
-                  bgType === 'video' ||
-                  bgType === 'solid' ||
-                  bgType === 'gradient') &&
-                  '!text-white [&_a]:text-white/95 [&_strong]:text-white',
+                'mb-0 max-w-none',
+                '[&_a]:text-white/90 [&_a]:underline-offset-4 [&_a]:transition-colors [&_a]:hover:text-white',
+                '[&_p]:text-xl [&_p]:leading-snug [&_p]:font-light [&_p]:text-white/80 sm:[&_p]:text-2xl',
+                '[&_strong]:font-medium [&_strong]:text-white',
+                '[&_h1]:font-heading [&_h1]:text-center [&_h1]:text-white [&_h1]:italic [&_h1]:tracking-[-0.02em] [&_h1]:leading-[0.92] [&_h1]:text-[clamp(2.75rem,9vw,5.5rem)]',
+                '[&_h2]:font-heading [&_h2]:text-white [&_h2]:italic [&_h2]:tracking-tight [&_h2]:text-[clamp(2rem,5vw,3.25rem)] [&_h2]:leading-tight',
+                '[&_h3]:font-heading [&_h3]:text-white [&_h3]:italic [&_h3]:text-[clamp(1.5rem,3.5vw,2.25rem)] [&_h3]:leading-tight',
+                '[&_h4]:font-body [&_h4]:text-lg [&_h4]:font-medium [&_h4]:tracking-tight [&_h4]:text-white/90',
+                buttonsPosition === 'bottom' &&
+                  '[&_h2]:text-center [&_h3]:text-center [&_h4]:text-center [&_p]:text-center',
               )}
               data={richText}
               enableGutter={false}
@@ -198,12 +196,42 @@ export const CallToActionBlock: React.FC<CTABlockProps> = ({
         </div>
         <div
           className={cn(
-            'flex flex-col gap-8',
-            buttonsPosition === 'bottom' && 'md:flex-row md:flex-wrap',
+            'relative z-[1] flex flex-shrink-0 flex-col flex-wrap items-stretch gap-3 sm:flex-row sm:items-center',
+            buttonsPosition === 'right' && 'md:justify-end',
+            buttonsPosition === 'left' && 'md:justify-start',
+            buttonsPosition === 'bottom' && 'md:justify-center',
           )}
         >
           {(links || []).map(({ link }, i) => {
-            return <CMSLink key={i} size="lg" {...link} />
+            const appearance = link.appearance === 'outline' ? 'outline' : 'default'
+            if (appearance === 'outline') {
+              return (
+                <CMSLink
+                  key={i}
+                  appearance="inline"
+                  className="liquid-glass font-body rounded-full px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:scale-[1.03] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_0_20px_2px_rgba(255,255,255,0.07)] active:scale-[0.97]"
+                  label={link.label}
+                  newTab={link.newTab}
+                  reference={link.reference}
+                  type={link.type}
+                  url={link.url}
+                />
+              )
+            }
+            return (
+              <CMSLink
+                key={i}
+                appearance="inline"
+                className="group relative inline-flex overflow-hidden rounded-full bg-white px-6 py-3 font-body text-sm font-medium text-black shadow-[0_0_0_0_rgba(255,255,255,0)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_24px_4px_rgba(255,255,255,0.25)] active:scale-[0.97]"
+                newTab={link.newTab}
+                reference={link.reference}
+                type={link.type}
+                url={link.url}
+              >
+                <span className="relative z-10">{link.label}</span>
+                <span className="absolute inset-0 bg-gradient-to-b from-white to-white/85 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+              </CMSLink>
+            )
           })}
         </div>
       </div>

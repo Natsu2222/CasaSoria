@@ -1,4 +1,4 @@
-import type { Field } from 'payload'
+import type { Field, Validate } from 'payload'
 
 import {
   FixedToolbarFeature,
@@ -8,6 +8,8 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { linkGroup } from '@/fields/linkGroup'
+
+import { microVisualsGroupField } from '@/heros/microVisualsFields'
 
 export const hero: Field = {
   name: 'hero',
@@ -35,12 +37,19 @@ export const hero: Field = {
           label: 'Low Impact',
           value: 'lowImpact',
         },
+        {
+          label: 'MicroVisuals (fullscreen)',
+          value: 'microVisuals',
+        },
       ],
       required: true,
     },
     {
       name: 'richText',
       type: 'richText',
+      admin: {
+        condition: (_, { type } = {}) => type !== 'microVisuals',
+      },
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
           return [
@@ -56,6 +65,9 @@ export const hero: Field = {
     linkGroup({
       overrides: {
         maxRows: 2,
+        admin: {
+          condition: (_, { type } = {}) => type !== 'microVisuals',
+        },
       },
     }),
     {
@@ -65,8 +77,15 @@ export const hero: Field = {
         condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
       },
       relationTo: 'media',
-      required: true,
+      validate: ((value, { siblingData }) => {
+        const t = siblingData?.type
+        if (t === 'highImpact' || t === 'mediumImpact') {
+          if (!value) return 'Media is required for this hero type.'
+        }
+        return true
+      }) satisfies Validate,
     },
+    microVisualsGroupField,
   ],
   label: false,
 }

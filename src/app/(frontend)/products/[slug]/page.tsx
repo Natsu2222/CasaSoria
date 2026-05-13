@@ -74,7 +74,11 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
           </div>
 
           <div className="lg:col-span-5">
-            <ReserveForm productID={String(product.id)} productTitle={product.title} disabled={disabled} />
+            <ReserveForm
+              productID={String(product.id)}
+              productTitle={product.title}
+              disabled={disabled}
+            />
             {disabled ? (
               <div className="text-sm text-muted-foreground mt-3">
                 Reservations are currently disabled for this product.
@@ -150,4 +154,3 @@ function availabilityLabel(value: unknown) {
   if (value === 'out_of_stock') return 'Out of stock'
   return '—'
 }
-

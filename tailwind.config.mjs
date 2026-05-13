@@ -2,6 +2,11 @@
 const config = {
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['Instrument Serif', 'serif'],
+        body: ['Barlow', 'sans-serif'],
+        dirtyline: ['Dirtyline', 'sans-serif'],
+      },
       typography: {
         DEFAULT: {
           css: [

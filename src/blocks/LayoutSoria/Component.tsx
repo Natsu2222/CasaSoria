@@ -70,7 +70,20 @@ function normalizeLayoutFontGroup(raw: unknown): FontGroupData | null {
 }
 
 const LAYOUT_FG_RICHTEXT =
-  'layout-senda-richtext [&_h1]:font-bold [&_h2]:font-bold [&_h3]:font-bold [&_h4]:font-bold [&_h5]:font-bold [&_h6]:font-bold [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6'
+  'layout-senda-richtext [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6'
+
+/** Default rich text look (MicroVisuals / CallToAction block). CMS `textColor` still overrides via injected CSS. */
+const MICROVISUALS_RICHTEXT =
+  'max-w-none [&_a]:text-white/90 [&_a]:underline-offset-4 [&_a]:transition-colors [&_a]:hover:text-white' +
+  ' [&_p]:text-xl [&_p]:leading-snug [&_p]:font-light [&_p]:text-white/80 sm:[&_p]:text-2xl' +
+  ' [&_strong]:font-medium [&_strong]:text-white' +
+  ' [&_h1]:font-heading [&_h1]:text-white [&_h1]:italic [&_h1]:tracking-[-0.02em] [&_h1]:leading-[0.92] [&_h1]:text-[clamp(2.25rem,7vw,4.25rem)]' +
+  ' [&_h2]:font-heading [&_h2]:text-white [&_h2]:italic [&_h2]:tracking-tight [&_h2]:text-[clamp(1.75rem,4vw,3rem)] [&_h2]:leading-tight' +
+  ' [&_h3]:font-heading [&_h3]:text-white [&_h3]:italic [&_h3]:text-[clamp(1.35rem,3vw,2.25rem)] [&_h3]:leading-tight' +
+  ' [&_h4]:font-body [&_h4]:text-lg [&_h4]:font-medium [&_h4]:tracking-tight [&_h4]:text-white/90' +
+  ' [&_h5]:font-body [&_h5]:text-base [&_h5]:font-medium [&_h5]:text-white/90' +
+  ' [&_h6]:font-body [&_h6]:text-sm [&_h6]:font-semibold [&_h6]:uppercase [&_h6]:tracking-wide [&_h6]:text-white/75' +
+  ' [&_li]:text-white/80 [&_blockquote]:border-white/20 [&_blockquote]:text-white/75'
 
 type LinkType = {
   type?: 'reference' | 'custom' | null
@@ -530,7 +543,6 @@ export const LayoutSoriaBlock: React.FC<LayoutSoriaProps> = (props) => {
           layoutCustomWidthVw == null && 'overflow-x-hidden px-[5%]',
           layoutCustomWidthVw != null && 'overflow-x-visible px-0',
         )}
-        style={layoutCustomWidthVw == null && backgroundColor ? { backgroundColor } : undefined}
       >
         {layoutCustomWidthVw != null && backgroundColor ? (
           <div
@@ -562,12 +574,20 @@ export const LayoutSoriaBlock: React.FC<LayoutSoriaProps> = (props) => {
             }
           >
             <div className={layoutCustomWidthVw == null ? 'container' : 'mx-auto w-full max-w-none'}>
-              <div className="grid grid-cols-1 gap-y-12 md:gap-y-16 lg:grid-cols-2 lg:items-center lg:gap-x-20">
-                <div className={textContainerClass} style={fontStyle}>
+              <div
+                className={cn(
+                  'relative isolate overflow-hidden rounded-[2rem] border border-white/10 bg-black p-8 font-body text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] md:rounded-[2.5rem] md:p-10 lg:p-12',
+                )}
+                data-theme="dark"
+                style={backgroundColor ? { backgroundColor } : undefined}
+              >
+                <div className="grid grid-cols-1 gap-y-12 md:gap-y-16 lg:grid-cols-2 lg:items-center lg:gap-x-20">
+                  <div className={textContainerClass} style={fontStyle}>
                   {richText && (
                     <div
                       className={cn(
                         'mb-6 md:mb-8',
+                        MICROVISUALS_RICHTEXT,
                         fontGroupTypographyActive && LAYOUT_FG_RICHTEXT,
                       )}
                     >
@@ -609,12 +629,13 @@ export const LayoutSoriaBlock: React.FC<LayoutSoriaProps> = (props) => {
                                 ) : (
                                   <span
                                     aria-hidden
-                                    className="w-[3px] shrink-0 self-stretch rounded-sm bg-[color-mix(in_oklch,var(--payload-block-accent)_88%,transparent)]"
+                                    className="w-[3px] shrink-0 self-stretch rounded-sm bg-white/25"
                                   />
                                 )}
                                 <div
                                   className={cn(
                                     'min-w-0',
+                                    MICROVISUALS_RICHTEXT,
                                     fontGroupTypographyActive && LAYOUT_FG_RICHTEXT,
                                   )}
                                 >
@@ -633,39 +654,93 @@ export const LayoutSoriaBlock: React.FC<LayoutSoriaProps> = (props) => {
                   )}
 
                   {buttonItems.length > 0 && (
-                    <div className="mt-6 flex flex-wrap items-center gap-4 md:mt-8">
+                    <div className="mt-6 flex flex-wrap items-center gap-3 md:mt-8">
                       {buttonItems.map((button, index) => {
-                        const appearance = button?.appearance ?? (index === 0 ? 'secondary' : 'link')
-                        const size = button?.size ?? (appearance === 'link' ? 'clear' : 'sm')
+                        const link = button?.link
+                        const rawAppearance = button?.appearance ?? (index === 0 ? 'secondary' : 'link')
                         const iconSVG = button?.iconSVG
-                        const filledClass = appearance === 'link' ? undefined : 'layout-senda-btn-filled'
+                        const linkSpread = link as React.ComponentProps<typeof CMSLink> | undefined
+
+                        const iconSlot = iconSVG ? (
+                          <span
+                            className="inline-flex size-5 shrink-0 [&_svg]:size-full"
+                            dangerouslySetInnerHTML={{ __html: sanitizeSVG(iconSVG) }}
+                            aria-hidden
+                          />
+                        ) : null
+
+                        if (rawAppearance === 'link') {
+                          return (
+                            <CMSLink
+                              key={index}
+                              {...linkSpread}
+                              appearance="inline"
+                              className="font-body text-sm font-light text-white/70 transition-colors duration-200 hover:text-white"
+                              label={undefined}
+                            >
+                              <span className="inline-flex items-center gap-1.5">
+                                <span
+                                  className={cn(
+                                    'layout-senda-btn-label min-w-0',
+                                    fontGroupTypographyActive && 'leading-normal',
+                                  )}
+                                >
+                                  {link?.label ?? 'Button'}
+                                </span>
+                                {iconSlot}
+                              </span>
+                            </CMSLink>
+                          )
+                        }
+
+                        const labelRow = (
+                          <span className="inline-flex items-center gap-1.5">
+                            <span
+                              className={cn(
+                                'layout-senda-btn-label min-w-0',
+                                fontGroupTypographyActive && 'leading-normal',
+                              )}
+                            >
+                              {link?.label ?? 'Button'}
+                            </span>
+                            {iconSlot}
+                          </span>
+                        )
+
+                        if (rawAppearance === 'outline' || rawAppearance === 'secondary') {
+                          return (
+                            <CMSLink
+                              key={index}
+                              {...linkSpread}
+                              appearance="inline"
+                              className="liquid-glass font-body rounded-full px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:scale-[1.03] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.2),0_0_20px_2px_rgba(255,255,255,0.07)] active:scale-[0.97]"
+                              label={undefined}
+                            >
+                              {labelRow}
+                            </CMSLink>
+                          )
+                        }
 
                         return (
                           <CMSLink
                             key={index}
-                            {...(button?.link as React.ComponentProps<typeof CMSLink>)}
+                            {...linkSpread}
+                            appearance="inline"
+                            className="layout-senda-btn-filled group relative inline-flex overflow-hidden rounded-full bg-white px-6 py-3 font-body text-sm font-medium text-black shadow-[0_0_0_0_rgba(255,255,255,0)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_24px_4px_rgba(255,255,255,0.25)] active:scale-[0.97]"
                             label={undefined}
-                            appearance={appearance}
-                            size={size}
-                            className={filledClass}
                           >
-                            <span className="inline-flex items-center gap-1.5">
+                            <span className="relative z-10 inline-flex items-center gap-1.5">
                               <span
                                 className={cn(
                                   'layout-senda-btn-label min-w-0',
                                   fontGroupTypographyActive && 'leading-normal',
                                 )}
                               >
-                                {button?.link?.label ?? 'Button'}
+                                {link?.label ?? 'Button'}
                               </span>
-                              {iconSVG ? (
-                                <span
-                                  className="inline-flex size-5 shrink-0 [&_svg]:size-full"
-                                  dangerouslySetInnerHTML={{ __html: sanitizeSVG(iconSVG) }}
-                                  aria-hidden
-                                />
-                              ) : null}
+                              {iconSlot}
                             </span>
+                            <span className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white to-white/85 opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
                           </CMSLink>
                         )
                       })}
@@ -678,7 +753,7 @@ export const LayoutSoriaBlock: React.FC<LayoutSoriaProps> = (props) => {
                     (useMediaViewportSize ? (
                       <div
                         data-layout-senda-vp-img={vpImgDataAttr}
-                        className="relative overflow-hidden rounded-3xl"
+                        className="relative overflow-hidden rounded-2xl"
                         style={
                           {
                             '--ls-vpw': `${mediaW}vw`,
@@ -706,7 +781,7 @@ export const LayoutSoriaBlock: React.FC<LayoutSoriaProps> = (props) => {
                         alt={mainImageAlt}
                         width={800}
                         height={600}
-                        className="w-full rounded-3xl object-cover"
+                        className="w-full rounded-2xl object-cover"
                       />
                     ))}
                 </div>
@@ -714,7 +789,8 @@ export const LayoutSoriaBlock: React.FC<LayoutSoriaProps> = (props) => {
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
     </>
   )
 }

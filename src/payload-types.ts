@@ -163,7 +163,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'microVisuals';
     richText?: {
       root: {
         type: string;
@@ -204,6 +204,100 @@ export interface Page {
         }[]
       | null;
     media?: (number | null) | Media;
+    microVisuals?: {
+      title?: string | null;
+      /**
+       * External MP4 URL (e.g. CDN). If set, this overrides the uploaded file below.
+       */
+      videoUrl?: string | null;
+      /**
+       * MP4 recommended. Used when Video URL is empty.
+       */
+      backgroundVideo?: (number | null) | Media;
+      navItems?:
+        | {
+            link: {
+              type?: ('reference' | 'custom') | null;
+              newTab?: boolean | null;
+              reference?:
+                | ({
+                    relationTo: 'pages';
+                    value: number | Page;
+                  } | null)
+                | ({
+                    relationTo: 'posts';
+                    value: number | Post;
+                  } | null);
+              url?: string | null;
+              label: string;
+            };
+            id?: string | null;
+          }[]
+        | null;
+      leftCaption?: string | null;
+      rightCaption?: string | null;
+      signIn: {
+        type?: ('reference' | 'custom') | null;
+        newTab?: boolean | null;
+        reference?:
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        url?: string | null;
+        label: string;
+      };
+      tryItFree: {
+        type?: ('reference' | 'custom') | null;
+        newTab?: boolean | null;
+        reference?:
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        url?: string | null;
+        label: string;
+      };
+      primaryCta: {
+        type?: ('reference' | 'custom') | null;
+        newTab?: boolean | null;
+        reference?:
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        url?: string | null;
+        label: string;
+      };
+      secondaryCta: {
+        type?: ('reference' | 'custom') | null;
+        newTab?: boolean | null;
+        reference?:
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        url?: string | null;
+        label: string;
+      };
+      showSecondaryIcon?: boolean | null;
+    };
   };
   layout: (
     | CallToActionBlock
@@ -1367,6 +1461,66 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        microVisuals?:
+          | T
+          | {
+              title?: T;
+              videoUrl?: T;
+              backgroundVideo?: T;
+              navItems?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                        };
+                    id?: T;
+                  };
+              leftCaption?: T;
+              rightCaption?: T;
+              signIn?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              tryItFree?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              primaryCta?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              secondaryCta?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              showSecondaryIcon?: T;
+            };
       };
   layout?:
     | T

@@ -52,7 +52,9 @@ export default async function ProductsPage() {
                 </div>
                 <div className="shrink-0 text-right">
                   <div className="font-semibold">{formatEUR(p.price)}</div>
-                  <div className="text-xs text-muted-foreground mt-1">{availabilityLabel(p.availability)}</div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {availabilityLabel(p.availability)}
+                  </div>
                 </div>
               </div>
             </Link>
@@ -78,4 +80,3 @@ function availabilityLabel(value: unknown) {
   if (value === 'out_of_stock') return 'Out of stock'
   return '—'
 }
-
