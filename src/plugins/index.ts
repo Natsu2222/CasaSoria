@@ -41,19 +41,51 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 // change S3_PUBLIC_URL in your environment — no code change required.
 // ─────────────────────────────────────────────────────────────────────────────
 
+// TEMP DEBUG — log what the runtime actually sees. Remove this block once
+// uploads work end-to-end. JSON.stringify preserves whitespace/quotes so we
+// can spot phantom empty strings vs missing variables.
+const R2_ENV_DUMP = {
+  S3_BUCKET: JSON.stringify(process.env.S3_BUCKET),
+  S3_ENDPOINT: JSON.stringify(process.env.S3_ENDPOINT),
+  S3_REGION: JSON.stringify(process.env.S3_REGION),
+  has_S3_ACCESS_KEY_ID: !!process.env.S3_ACCESS_KEY_ID,
+  has_S3_SECRET_ACCESS_KEY: !!process.env.S3_SECRET_ACCESS_KEY,
+  S3_PUBLIC_URL: JSON.stringify(process.env.S3_PUBLIC_URL),
+  NODE_ENV: process.env.NODE_ENV,
+  VERCEL_ENV: process.env.VERCEL_ENV,
+}
+console.log('[R2_BOOT_CHECK]', R2_ENV_DUMP)
+
+const r2Bucket = (process.env.S3_BUCKET ?? '').trim()
+const r2Endpoint = (process.env.S3_ENDPOINT ?? '').trim()
+const r2AccessKey = (process.env.S3_ACCESS_KEY_ID ?? '').trim()
+const r2SecretKey = (process.env.S3_SECRET_ACCESS_KEY ?? '').trim()
+
+if (!r2Bucket || !r2Endpoint || !r2AccessKey || !r2SecretKey) {
+  // Fail loudly instead of silently passing empty values to the S3 SDK, which
+  // would later throw the cryptic "No value provided for input HTTP label:
+  // Bucket." error at upload time.
+  throw new Error(
+    `[R2 storage] Missing required environment variables. ` +
+      `Seen at boot: ${JSON.stringify(R2_ENV_DUMP)}. ` +
+      `Make sure S3_BUCKET, S3_ENDPOINT, S3_ACCESS_KEY_ID and S3_SECRET_ACCESS_KEY are set ` +
+      `and NOT marked as "Sensitive" in Vercel — sensitive vars are not available during build.`,
+  )
+}
+
 const r2Storage = s3Storage({
   collections: {
     media: {
       disableLocalStorage: true,
     },
   },
-  bucket: process.env.S3_BUCKET ?? '',
+  bucket: r2Bucket,
   config: {
-    endpoint: process.env.S3_ENDPOINT,
+    endpoint: r2Endpoint,
     region: process.env.S3_REGION || 'auto',
     credentials: {
-      accessKeyId: process.env.S3_ACCESS_KEY_ID ?? '',
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? '',
+      accessKeyId: r2AccessKey,
+      secretAccessKey: r2SecretKey,
     },
     // Required for R2/MinIO — without this the SDK builds vhost-style URLs
     // like https://<bucket>.<endpoint>/key which R2 rejects.
