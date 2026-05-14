@@ -1,31 +1,49 @@
-version: '3'
+# Compose file for local development.
+# - Postgres 16 with healthcheck and persistent volume.
+# - Payload/Next runs the dev server with pnpm. The repo is bind-mounted, and
+#   node_modules lives in a named volume so it doesn't get clobbered by the host.
+#
+# For production, build the Dockerfile in this repo (it produces a standalone
+# Next.js image) and run it against a managed Postgres (RDS / Supabase / Neon /
+# DigitalOcean Managed DB). Do NOT use this compose file as the prod stack.
 
 services:
   payload:
-    image: node:18-alpine
+    image: node:22-alpine
     ports:
       - '3000:3000'
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
     working_dir: /home/node/app/
-    command: sh -c "yarn install && yarn dev"
+    command: sh -c "corepack enable pnpm && pnpm install --frozen-lockfile && pnpm dev"
     depends_on:
-      - mongo
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
+    environment:
+      # Override DATABASE_URL so the app inside the container reaches the db
+      # service by its compose hostname, regardless of what's in .env.
+      DATABASE_URL: postgresql://payload:payload@postgres:5432/payload
 
-  mongo:
-    image: mongo:latest
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
     ports:
-      - '27017:27017'
-    command:
-      - --storageEngine=wiredTiger
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: payload
+      POSTGRES_PASSWORD: payload
+      POSTGRES_DB: payload
     volumes:
-      - data:/data/db
-    logging:
-      driver: none
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U payload -d payload']
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 volumes:
-  data:
+  postgres_data:
   node_modules:

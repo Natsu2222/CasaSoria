@@ -307,6 +307,7 @@ export interface Page {
     | FormBlock
     | ProductsBlock
     | LayoutSoriaBlock
+    | LocationBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1141,6 +1142,68 @@ export interface LayoutSoriaBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LocationBlock".
+ */
+export interface LocationBlock {
+  /**
+   * Shown as the heading above the address and used as the business name in structured data.
+   */
+  businessName: string;
+  /**
+   * Short tagline shown under the heading (optional).
+   */
+  description?: string | null;
+  address: {
+    streetAddress: string;
+    postalCode: string;
+    addressLocality: string;
+    addressRegion?: string | null;
+    /**
+     * Two-letter country code, e.g. ES for Spain.
+     */
+    addressCountry: string;
+  };
+  /**
+   * In international format, e.g. +34 912 345 678
+   */
+  phone: string;
+  email?: string | null;
+  /**
+   * On Google Maps: open your business → Share → "Embed a map" → copy the URL from the src="..." attribute. Must start with https://www.google.com/maps/embed.
+   */
+  embedUrl: string;
+  /**
+   * Find your business in Google Maps, right-click the pin, click the coordinates to copy them, and paste here.
+   */
+  geo?: {
+    latitude?: number | null;
+    longitude?: number | null;
+  };
+  /**
+   * Add one entry per continuous time range. For split schedules (e.g. mornings + afternoons) add two entries with the same days.
+   */
+  openingHours?:
+    | {
+        daysOfWeek: ('Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday')[];
+        opens?: string | null;
+        closes?: string | null;
+        /**
+         * Tick if these days are closed all day.
+         */
+        closed?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Hint shown to Google for local listings. Not displayed on the page.
+   */
+  priceRange?: ('€' | '€€' | '€€€') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'locationBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "reservations".
  */
 export interface Reservation {
@@ -1151,6 +1214,8 @@ export interface Reservation {
   mobile: string;
   email: string;
   message?: string | null;
+  hp_field?: string | null;
+  submittedFromIP?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1532,6 +1597,7 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         productsBlock?: T | ProductsBlockSelect<T>;
         layoutSoria?: T | LayoutSoriaBlockSelect<T>;
+        locationBlock?: T | LocationBlockSelect<T>;
       };
   meta?:
     | T
@@ -1722,6 +1788,44 @@ export interface LayoutSoriaBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LocationBlock_select".
+ */
+export interface LocationBlockSelect<T extends boolean = true> {
+  businessName?: T;
+  description?: T;
+  address?:
+    | T
+    | {
+        streetAddress?: T;
+        postalCode?: T;
+        addressLocality?: T;
+        addressRegion?: T;
+        addressCountry?: T;
+      };
+  phone?: T;
+  email?: T;
+  embedUrl?: T;
+  geo?:
+    | T
+    | {
+        latitude?: T;
+        longitude?: T;
+      };
+  openingHours?:
+    | T
+    | {
+        daysOfWeek?: T;
+        opens?: T;
+        closes?: T;
+        closed?: T;
+        id?: T;
+      };
+  priceRange?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -1894,6 +1998,8 @@ export interface ReservationsSelect<T extends boolean = true> {
   mobile?: T;
   email?: T;
   message?: T;
+  hp_field?: T;
+  submittedFromIP?: T;
   updatedAt?: T;
   createdAt?: T;
 }

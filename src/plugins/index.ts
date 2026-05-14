@@ -3,6 +3,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
@@ -22,6 +23,43 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 
   return doc?.slug ? `${url}/${doc.slug}` : url
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Cloudflare R2 (S3-compatible) storage adapter for the `media` collection.
+//
+// What this does:
+//   - Intercepts uploads to the `media` collection and writes them to R2.
+//   - Sets `disableLocalStorage` so files no longer end up in public/media.
+//   - The bucket and credentials come from .env (S3_BUCKET, S3_ENDPOINT,
+//     S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY). See .env.example.
+//
+// The `url` field on each Media doc is rewritten to point at the public R2
+// URL (S3_PUBLIC_URL) by an `afterRead` hook in src/collections/Media.ts.
+// We do it there instead of here so it also covers the resized image sizes.
+//
+// To switch to a custom domain later (recommended for production), just
+// change S3_PUBLIC_URL in your environment — no code change required.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const r2Storage = s3Storage({
+  collections: {
+    media: {
+      disableLocalStorage: true,
+    },
+  },
+  bucket: process.env.S3_BUCKET ?? '',
+  config: {
+    endpoint: process.env.S3_ENDPOINT,
+    region: process.env.S3_REGION || 'auto',
+    credentials: {
+      accessKeyId: process.env.S3_ACCESS_KEY_ID ?? '',
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? '',
+    },
+    // Required for R2/MinIO — without this the SDK builds vhost-style URLs
+    // like https://<bucket>.<endpoint>/key which R2 rejects.
+    forcePathStyle: true,
+  },
+})
 
 export const plugins: Plugin[] = [
   redirectsPlugin({
@@ -89,4 +127,5 @@ export const plugins: Plugin[] = [
       },
     },
   }),
+  r2Storage,
 ]

@@ -12,6 +12,10 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
 
 const nextConfig: NextConfig = {
+  // Required for the Dockerfile in this repo: produces .next/standalone with
+  // a self-contained server.js. Vercel ignores this flag, so it's safe to leave on.
+  output: 'standalone',
+  poweredByHeader: false,
   // Temporarily required on Windows until Next.js fixes Turbopack Sass resolution.
   // See: https://github.com/vercel/next.js/issues/86431
   sassOptions: {
@@ -23,7 +27,9 @@ const nextConfig: NextConfig = {
         pathname: '/api/media/file/**',
       },
     ],
-    qualities: [100],
+    // Allow the Next/Image quality prop to fall back to 75 (default) or 85;
+    // 100 alone forces every image to be served at max quality.
+    qualities: [75, 85, 100],
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
         const url = new URL(item)

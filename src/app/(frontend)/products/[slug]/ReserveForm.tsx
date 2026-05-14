@@ -3,7 +3,10 @@
 import React, { useMemo, useState } from 'react'
 
 type Props = {
-  productID: string
+  // Numeric ID from Postgres. We type it as number-or-string and coerce
+  // before sending so the relationship is preserved correctly server-side
+  // (Payload was iterating string IDs char-by-char and rejecting them).
+  productID: number | string
   productTitle: string
   disabled?: boolean
 }
@@ -28,12 +31,22 @@ export function ReserveForm({ productID, productTitle, disabled }: Props) {
         const form = e.currentTarget
         const formData = new FormData(form)
 
+        // Coerce productID to a number — sending it as a string causes
+        // Payload's relationship validator to iterate the string character by
+        // character (e.g. "10" → ["1", "0"]) and reject the request.
+        const productIDNum = typeof productID === 'number' ? productID : Number(productID)
+
         const payload = {
-          product: productID,
+          product: Number.isFinite(productIDNum) ? productIDNum : productID,
           fullName: String(formData.get('fullName') || '').trim(),
           mobile: String(formData.get('mobile') || '').trim(),
           email: String(formData.get('email') || '').trim(),
           message: String(formData.get('message') || '').trim() || undefined,
+          // Honeypot: real users won't see this field. Bots usually fill every
+          // input, so a non-empty value tells the server to reject the request.
+          // Name is deliberately obscure to avoid browser autofill (Chrome
+          // and Safari autofill "website", "url", "company", etc.).
+          hp_field: String(formData.get('hp_field') || ''),
         }
 
         try {
@@ -64,6 +77,24 @@ export function ReserveForm({ productID, productTitle, disabled }: Props) {
             store.
           </div>
         </div>
+      </div>
+
+      {/* Honeypot — visually hidden, ignored by real users, filled by bots.
+          The name `hp_field` is deliberately obscure so password managers and
+          browser autofill don't fill it in (which used to trigger the trap
+          for legitimate users typing into the real fields). */}
+      <div aria-hidden="true" className="absolute left-[-9999px] top-auto h-0 w-0 overflow-hidden">
+        <label htmlFor={`${formId}-hp`}>Leave this field empty</label>
+        <input
+          id={`${formId}-hp`}
+          name="hp_field"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          data-form-type="other"
+          data-lpignore="true"
+          data-1p-ignore="true"
+        />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">

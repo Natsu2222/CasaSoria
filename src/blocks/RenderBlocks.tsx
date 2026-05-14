@@ -7,6 +7,7 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { LayoutSoriaBlock } from '@/blocks/LayoutSoria/Component'
+import { LocationBlock } from '@/blocks/LocationBlock/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { ProductsBlock } from '@/blocks/ProductsBlock/Component'
 
@@ -16,6 +17,7 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   layoutSoria: LayoutSoriaBlock,
+  locationBlock: LocationBlock,
   mediaBlock: MediaBlock,
   productsBlock: ProductsBlock,
 }
