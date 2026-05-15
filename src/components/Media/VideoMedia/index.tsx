@@ -24,7 +24,24 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
   }, [])
 
   if (resource && typeof resource === 'object') {
-    const { filename } = resource
+    // Prefer the `url` field populated by the Media collection's afterRead
+    // hook — it points at the R2 public URL when cloud storage is wired up,
+    // and falls back to a relative Payload path when running with local
+    // storage. The previous hard-coded `/media/${filename}` always pointed
+    // at the local disk, which 404s in production now that files live in R2.
+    const { filename, url, mimeType } = resource as {
+      filename?: string
+      url?: string | null
+      mimeType?: string | null
+    }
+    const videoSrc =
+      typeof url === 'string' && url.length > 0
+        ? getMediaUrl(url)
+        : filename
+          ? getMediaUrl(`/media/${filename}`)
+          : null
+
+    if (!videoSrc) return null
 
     return (
       <video
@@ -37,7 +54,7 @@ export const VideoMedia: React.FC<MediaProps> = (props) => {
         playsInline
         ref={videoRef}
       >
-        <source src={getMediaUrl(`/media/${filename}`)} />
+        <source src={videoSrc} type={typeof mimeType === 'string' ? mimeType : undefined} />
       </video>
     )
   }

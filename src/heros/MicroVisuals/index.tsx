@@ -19,7 +19,10 @@ function resolveHeroVideoSrc(micro: Page['hero']['microVisuals'] | null | undefi
   if (override) return override
   const m = micro.backgroundVideo
   if (typeof m === 'object' && m) {
-    if (m.url?.trim()) return m.url
+    // Prefer the URL populated by the Media collection's afterRead hook
+    // (points at R2 in production). Fall back to the legacy local path only
+    // if the CMS hasn't filled `url` for some reason.
+    if (m.url?.trim()) return getMediaUrl(m.url)
     if (m.filename) return getMediaUrl(`/media/${m.filename}`)
   }
   return FALLBACK_VIDEO_SRC
