@@ -42,15 +42,29 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 // TEMP DEBUG — log what the runtime actually sees. Remove this block once
-// uploads work end-to-end. JSON.stringify preserves whitespace/quotes so we
-// can spot phantom empty strings vs missing variables.
+// uploads work end-to-end.
+//
+// We print:
+//   - String lengths for the credentials (R2 access key is 32 chars, secret is 64)
+//   - First & last 4 chars of each credential so we can spot accidental swaps
+//     or copy-paste truncation without exposing the full secret in logs.
+const len = (v: string | undefined) => (typeof v === 'string' ? v.length : 0)
+const head = (v: string | undefined) => (typeof v === 'string' ? v.slice(0, 4) : '')
+const tail = (v: string | undefined) => (typeof v === 'string' ? v.slice(-4) : '')
+
 const R2_ENV_DUMP = {
   S3_BUCKET: JSON.stringify(process.env.S3_BUCKET),
   S3_ENDPOINT: JSON.stringify(process.env.S3_ENDPOINT),
   S3_REGION: JSON.stringify(process.env.S3_REGION),
-  has_S3_ACCESS_KEY_ID: !!process.env.S3_ACCESS_KEY_ID,
-  has_S3_SECRET_ACCESS_KEY: !!process.env.S3_SECRET_ACCESS_KEY,
+  S3_ACCESS_KEY_ID_len: len(process.env.S3_ACCESS_KEY_ID),
+  S3_ACCESS_KEY_ID_preview: `${head(process.env.S3_ACCESS_KEY_ID)}...${tail(process.env.S3_ACCESS_KEY_ID)}`,
+  S3_SECRET_ACCESS_KEY_len: len(process.env.S3_SECRET_ACCESS_KEY),
+  S3_SECRET_ACCESS_KEY_preview: `${head(process.env.S3_SECRET_ACCESS_KEY)}...${tail(process.env.S3_SECRET_ACCESS_KEY)}`,
   S3_PUBLIC_URL: JSON.stringify(process.env.S3_PUBLIC_URL),
+  // Detect if anything else in the env is shadowing AWS creds (some Vercel
+  // integrations set AWS_* vars which the SDK auto-picks up).
+  has_AWS_ACCESS_KEY_ID: !!process.env.AWS_ACCESS_KEY_ID,
+  has_AWS_SECRET_ACCESS_KEY: !!process.env.AWS_SECRET_ACCESS_KEY,
   NODE_ENV: process.env.NODE_ENV,
   VERCEL_ENV: process.env.VERCEL_ENV,
 }

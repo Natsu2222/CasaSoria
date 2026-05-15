@@ -11,6 +11,15 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
 
+// Hosts that next/image is allowed to fetch from. We always include the app's
+// own server, plus — if configured — the public R2 URL where uploaded media
+// lives. Without this, next/image silently rejects bucket URLs and the
+// frontend renders broken images.
+const ALLOWED_IMAGE_ORIGINS = [
+  NEXT_PUBLIC_SERVER_URL,
+  process.env.S3_PUBLIC_URL,
+].filter((value): value is string => typeof value === 'string' && value.length > 0)
+
 const nextConfig: NextConfig = {
   // Required for the Dockerfile in this repo: produces .next/standalone with
   // a self-contained server.js. Vercel ignores this flag, so it's safe to leave on.
@@ -30,16 +39,14 @@ const nextConfig: NextConfig = {
     // Allow the Next/Image quality prop to fall back to 75 (default) or 85;
     // 100 alone forces every image to be served at max quality.
     qualities: [75, 85, 100],
-    remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
-        const url = new URL(item)
+    remotePatterns: ALLOWED_IMAGE_ORIGINS.map((item) => {
+      const url = new URL(item)
 
-        return {
-          hostname: url.hostname,
-          protocol: url.protocol.replace(':', '') as 'http' | 'https',
-        }
-      }),
-    ],
+      return {
+        hostname: url.hostname,
+        protocol: url.protocol.replace(':', '') as 'http' | 'https',
+      }
+    }),
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
