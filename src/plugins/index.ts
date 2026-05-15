@@ -41,50 +41,25 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 // change S3_PUBLIC_URL in your environment — no code change required.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// TEMP DEBUG — log what the runtime actually sees. Remove this block once
-// uploads work end-to-end.
-//
-// We print:
-//   - String lengths for the credentials (R2 access key is 32 chars, secret is 64)
-//   - First & last 4 chars of each credential so we can spot accidental swaps
-//     or copy-paste truncation without exposing the full secret in logs.
-const len = (v: string | undefined) => (typeof v === 'string' ? v.length : 0)
-const head = (v: string | undefined) => (typeof v === 'string' ? v.slice(0, 4) : '')
-const tail = (v: string | undefined) => (typeof v === 'string' ? v.slice(-4) : '')
-
-const R2_ENV_DUMP = {
-  S3_BUCKET: JSON.stringify(process.env.S3_BUCKET),
-  S3_ENDPOINT: JSON.stringify(process.env.S3_ENDPOINT),
-  S3_REGION: JSON.stringify(process.env.S3_REGION),
-  S3_ACCESS_KEY_ID_len: len(process.env.S3_ACCESS_KEY_ID),
-  S3_ACCESS_KEY_ID_preview: `${head(process.env.S3_ACCESS_KEY_ID)}...${tail(process.env.S3_ACCESS_KEY_ID)}`,
-  S3_SECRET_ACCESS_KEY_len: len(process.env.S3_SECRET_ACCESS_KEY),
-  S3_SECRET_ACCESS_KEY_preview: `${head(process.env.S3_SECRET_ACCESS_KEY)}...${tail(process.env.S3_SECRET_ACCESS_KEY)}`,
-  S3_PUBLIC_URL: JSON.stringify(process.env.S3_PUBLIC_URL),
-  // Detect if anything else in the env is shadowing AWS creds (some Vercel
-  // integrations set AWS_* vars which the SDK auto-picks up).
-  has_AWS_ACCESS_KEY_ID: !!process.env.AWS_ACCESS_KEY_ID,
-  has_AWS_SECRET_ACCESS_KEY: !!process.env.AWS_SECRET_ACCESS_KEY,
-  NODE_ENV: process.env.NODE_ENV,
-  VERCEL_ENV: process.env.VERCEL_ENV,
-}
-console.log('[R2_BOOT_CHECK]', R2_ENV_DUMP)
-
 const r2Bucket = (process.env.S3_BUCKET ?? '').trim()
 const r2Endpoint = (process.env.S3_ENDPOINT ?? '').trim()
 const r2AccessKey = (process.env.S3_ACCESS_KEY_ID ?? '').trim()
 const r2SecretKey = (process.env.S3_SECRET_ACCESS_KEY ?? '').trim()
 
+// Fail loudly on boot if any required R2 env var is missing, instead of
+// silently passing empty values to the S3 SDK and getting the cryptic
+// "No value provided for input HTTP label: Bucket." error at upload time.
+// On Vercel, remember that variables marked as "Sensitive" are not available
+// during the build step — only at runtime — which can cause this branch to
+// fire even when the values exist in the Vercel dashboard.
 if (!r2Bucket || !r2Endpoint || !r2AccessKey || !r2SecretKey) {
-  // Fail loudly instead of silently passing empty values to the S3 SDK, which
-  // would later throw the cryptic "No value provided for input HTTP label:
-  // Bucket." error at upload time.
-  throw new Error(
-    `[R2 storage] Missing required environment variables. ` +
-      `Seen at boot: ${JSON.stringify(R2_ENV_DUMP)}. ` +
-      `Make sure S3_BUCKET, S3_ENDPOINT, S3_ACCESS_KEY_ID and S3_SECRET_ACCESS_KEY are set ` +
-      `and NOT marked as "Sensitive" in Vercel — sensitive vars are not available during build.`,
-  )
+  const missing = [
+    !r2Bucket && 'S3_BUCKET',
+    !r2Endpoint && 'S3_ENDPOINT',
+    !r2AccessKey && 'S3_ACCESS_KEY_ID',
+    !r2SecretKey && 'S3_SECRET_ACCESS_KEY',
+  ].filter(Boolean)
+  throw new Error(`[R2 storage] Missing required environment variables: ${missing.join(', ')}`)
 }
 
 const r2Storage = s3Storage({
