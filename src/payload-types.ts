@@ -309,6 +309,7 @@ export interface Page {
     | LayoutSoriaBlock
     | LayoutSoria2Block
     | LocationBlock
+    | ServiciosSoriaBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1193,6 +1194,7 @@ export interface LayoutSoria2Block {
   fontFamily?:
     | (
         | 'default'
+        | '"Instrument Serif", serif'
         | 'Arial, sans-serif'
         | '"Times New Roman", serif'
         | 'Georgia, serif'
@@ -1274,6 +1276,246 @@ export interface LocationBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'locationBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiciosSoriaBlock".
+ */
+export interface ServiciosSoriaBlock {
+  /**
+   * ID opcional para enlaces ancla (ej: servicios).
+   */
+  anchorId?: string | null;
+  /**
+   * Opcional. Línea breve encima del título.
+   */
+  eyebrow?: string | null;
+  /**
+   * Encabezado principal del bloque. Por defecto se renderiza con el mismo estilo que el headline del hero MicroVisuals.
+   */
+  title?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Párrafo descriptivo bajo el título.
+   */
+  subtitle?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Cada elemento es una tarjeta del carrusel. La primera tarjeta arranca expandida; las demás aparecen como tarjetas pequeñas a su lado y se expanden al hacer click o cuando el autoplay las selecciona.
+   */
+  services?:
+    | {
+        /**
+         * Imagen que ocupa toda la tarjeta. Idealmente 1200×1500 o vertical.
+         */
+        image: number | Media;
+        /**
+         * Texto corto que aparece siempre en la esquina inferior de la tarjeta (badge tipo "Compra en tienda").
+         */
+        label?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Texto descriptivo que aparece bajo la etiqueta cuando la tarjeta está expandida.
+         */
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Opcional. Aparece arriba a la derecha cuando la tarjeta está expandida. Si no hay label, no se muestra el botón.
+         */
+        cta: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  autoplay?: boolean | null;
+  /**
+   * Solo aplica si "Avance automático" está activo.
+   */
+  autoplayMs?: number | null;
+  /**
+   * Opcional. Cualquier color CSS (#hex, rgb, oklch, etc.).
+   */
+  backgroundColor?: string | null;
+  /**
+   * Opcional. Por defecto hereda el color del bloque.
+   */
+  titleColor?: string | null;
+  /**
+   * Por defecto usa el estilo display del hero MicroVisuals.
+   */
+  titleFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Opcional.
+   */
+  subtitleColor?: string | null;
+  /**
+   * Por defecto usa el cuerpo de texto MicroVisuals (Barlow).
+   */
+  subtitleFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Aplica al label y a la descripción dentro de cada tarjeta.
+   */
+  cardTextColor?: string | null;
+  /**
+   * Aplica al label y a la descripción dentro de cada tarjeta.
+   */
+  cardFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Opcional. Por defecto blanco semitransparente.
+   */
+  ctaBackgroundColor?: string | null;
+  /**
+   * Opcional. Por defecto usa el color de primer plano.
+   */
+  ctaTextColor?: string | null;
+  /**
+   * Tipografía del botón superior cuando la tarjeta está activa.
+   */
+  ctaFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'serviciosSoria';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1672,6 +1914,7 @@ export interface PagesSelect<T extends boolean = true> {
         layoutSoria?: T | LayoutSoriaBlockSelect<T>;
         layoutSoria2?: T | LayoutSoria2BlockSelect<T>;
         locationBlock?: T | LocationBlockSelect<T>;
+        serviciosSoria?: T | ServiciosSoriaBlockSelect<T>;
       };
   meta?:
     | T
@@ -1924,6 +2167,47 @@ export interface LocationBlockSelect<T extends boolean = true> {
         id?: T;
       };
   priceRange?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServiciosSoriaBlock_select".
+ */
+export interface ServiciosSoriaBlockSelect<T extends boolean = true> {
+  anchorId?: T;
+  eyebrow?: T;
+  title?: T;
+  subtitle?: T;
+  services?:
+    | T
+    | {
+        image?: T;
+        label?: T;
+        description?: T;
+        cta?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  autoplay?: T;
+  autoplayMs?: T;
+  backgroundColor?: T;
+  titleColor?: T;
+  titleFontFamily?: T;
+  subtitleColor?: T;
+  subtitleFontFamily?: T;
+  cardTextColor?: T;
+  cardFontFamily?: T;
+  ctaBackgroundColor?: T;
+  ctaTextColor?: T;
+  ctaFontFamily?: T;
   id?: T;
   blockName?: T;
 }

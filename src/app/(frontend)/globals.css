@@ -422,3 +422,45 @@ html[data-theme='light'] {
   color: white;
   text-align: center;
 }
+
+/* ────────────────────────────────────────────────────────────────────────
+ * Servicios Soria block — default typography that mirrors the MicroVisuals
+ * hero (Instrument Serif italic display heading, font-body light captions)
+ * but adapted for a light section. Editors can override per-document via
+ * the rich-text editor; these are the defaults applied to plain content.
+ * ──────────────────────────────────────────────────────────────────────── */
+.servicios-soria-title :where(h1, h2, h3, p) {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: clamp(40px, 6vw, 84px);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: currentColor;
+  margin: 0;
+}
+
+.servicios-soria-subtitle :where(p) {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-weight: 300;
+  font-size: clamp(16px, 1.2vw, 20px);
+  line-height: 1.55;
+  color: inherit;
+  margin: 0;
+}
+
+.servicios-soria-label :where(p) {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.servicios-soria-description :where(p) {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.45;
+}
+.servicios-soria-description :where(p + p) {
+  margin-top: 0.25rem;
+}

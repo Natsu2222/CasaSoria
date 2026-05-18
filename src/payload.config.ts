@@ -64,6 +64,11 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
       ...(shouldUseSSL(process.env.DATABASE_URL) ? { ssl: { rejectUnauthorized: false } } : {}),
     },
+    // Disable Drizzle `push` in dev. We want every schema change to go
+    // through `pnpm migrate:create` + `pnpm migrate` so the DB and the
+    // committed migrations stay in lockstep. This also avoids the slow
+    // "Pulling schema from database…" boot step on every dev start.
+    push: false,
   }),
   collections: [Pages, Posts, Media, Categories, Products, Reservations, Users],
   cors: [getServerSideURL()].filter(Boolean),

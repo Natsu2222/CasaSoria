@@ -11,6 +11,7 @@ import { LayoutSoria2Block } from '../../blocks/LayoutSoria2/config'
 import { LocationBlock } from '../../blocks/LocationBlock/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { ProductsBlock } from '../../blocks/ProductsBlock/config'
+import { ServiciosSoriaBlock } from '../../blocks/ServiciosSoria/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -86,6 +87,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 LayoutSoriaBlock,
                 LayoutSoria2Block,
                 LocationBlock,
+                ServiciosSoriaBlock,
               ],
               required: true,
               admin: {

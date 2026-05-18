@@ -5,6 +5,7 @@ import type { LayoutSoria2Block as LayoutSoria2BlockProps } from '@/payload-type
 import { Media } from '@/components/Media'
 import { cn } from '@/utilities/ui'
 
+import { ScrollReveal } from './ScrollReveal'
 import { LayoutSoria2TextColumn } from './TextColumn'
 
 function sanitizeAnchorId(value: string | null | undefined): string | undefined {
@@ -88,22 +89,27 @@ export const LayoutSoria2Block: React.FC<
             radiusStyle={radiusStyle}
           />
 
-          <div
+          <ScrollReveal
             className={cn(
-              'relative isolate min-h-[280px] w-full min-w-0 overflow-hidden lg:min-h-[420px]',
+              'w-full min-w-0',
               imageOnRight ? 'lg:order-2' : 'lg:order-1',
             )}
-            style={radiusStyle}
+            delayMs={480}
           >
-            {image && typeof image === 'object' ? (
-              <Media
-                fill
-                resource={image}
-                alt={resolvedImageAlt || undefined}
-                imgClassName="object-cover"
-              />
-            ) : null}
-          </div>
+            <div
+              className="relative isolate min-h-[280px] w-full overflow-hidden lg:min-h-[420px]"
+              style={radiusStyle}
+            >
+              {image && typeof image === 'object' ? (
+                <Media
+                  fill
+                  resource={image}
+                  alt={resolvedImageAlt || undefined}
+                  imgClassName="object-cover"
+                />
+              ) : null}
+            </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>
