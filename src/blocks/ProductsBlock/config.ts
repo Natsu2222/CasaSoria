@@ -75,6 +75,16 @@ export const ProductsBlock: Block = {
       },
       label: 'Products',
     },
+    {
+      name: 'carousel',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Mostrar como carrusel',
+      admin: {
+        description:
+          'Si está activado, los productos se muestran en un carrusel horizontal en lugar de la cuadrícula apilada.',
+      },
+    },
   ],
 }
 

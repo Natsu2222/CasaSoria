@@ -950,6 +950,10 @@ export interface ProductsBlock {
   populateBy?: ('collection' | 'selection') | null;
   limit?: number | null;
   selectedProducts?: (number | Product)[] | null;
+  /**
+   * Si está activado, los productos se muestran en un carrusel horizontal en lugar de la cuadrícula apilada.
+   */
+  carousel?: boolean | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'productsBlock';
@@ -2036,6 +2040,7 @@ export interface ProductsBlockSelect<T extends boolean = true> {
   populateBy?: T;
   limit?: T;
   selectedProducts?: T;
+  carousel?: T;
   id?: T;
   blockName?: T;
 }

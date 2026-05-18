@@ -385,7 +385,6 @@ const ServiceCardItem = React.forwardRef<HTMLButtonElement, ServiceCardItemProps
               color: ctaTextColor,
               fontFamily: ctaFontFamily,
             }}
-            label={cta.label}
             newTab={cta.newTab ?? undefined}
             reference={cta.reference ?? undefined}
             type={cta.type ?? undefined}
