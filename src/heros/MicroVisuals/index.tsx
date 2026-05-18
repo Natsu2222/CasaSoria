@@ -307,14 +307,19 @@ export const MicroVisualsHero: React.FC<Page['hero']> = ({ microVisuals: micro }
       </nav>
 
       <div
-        className={`pointer-events-auto absolute right-0 bottom-[calc(2.5rem+4%)] left-0 z-20 flex items-end justify-between px-10 transition-all delay-300 duration-1000 ${
+        className={`pointer-events-auto absolute right-0 bottom-[calc(1.5rem+2%)] left-0 z-20 flex flex-col gap-10 px-6 pb-2 transition-all delay-300 duration-1000 md:bottom-[calc(2.5rem+4%)] md:flex-row md:items-end md:justify-between md:gap-0 md:px-10 md:pb-0 ${
           mounted ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
         }`}
       >
-        <p className="font-body max-w-[min(100%,340px)] text-base leading-relaxed font-light text-white/80 sm:text-lg lg:text-xl">
-          {leftCaption}
-        </p>
-        <div className="absolute bottom-0 left-1/2 flex -translate-x-1/2 items-center gap-3">
+        <div className="grid w-full grid-cols-2 gap-x-4 gap-y-3 md:contents">
+          <p className="font-body text-base leading-relaxed font-light text-white/80 sm:text-lg lg:text-xl md:max-w-[min(100%,340px)]">
+            {leftCaption}
+          </p>
+          <p className="font-body text-right text-base leading-relaxed font-light text-white/80 sm:text-lg lg:text-xl md:max-w-[min(100%,340px)]">
+            {rightCaption}
+          </p>
+        </div>
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-3 max-md:pb-1 md:absolute md:bottom-0 md:left-1/2 md:mt-0 md:-translate-x-1/2">
           {micro?.primaryCta?.label ? (
             <CMSLink
               appearance="inline"
@@ -346,9 +351,6 @@ export const MicroVisualsHero: React.FC<Page['hero']> = ({ microVisuals: micro }
             </CMSLink>
           ) : null}
         </div>
-        <p className="font-body max-w-[min(100%,340px)] text-right text-base leading-relaxed font-light text-white/80 sm:text-lg lg:text-xl">
-          {rightCaption}
-        </p>
       </div>
     </div>
   )

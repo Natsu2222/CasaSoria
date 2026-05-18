@@ -7,6 +7,7 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { LayoutSoriaBlock } from '../../blocks/LayoutSoria/config'
+import { LayoutSoria2Block } from '../../blocks/LayoutSoria2/config'
 import { LocationBlock } from '../../blocks/LocationBlock/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { ProductsBlock } from '../../blocks/ProductsBlock/config'
@@ -75,7 +76,17 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, ProductsBlock, LayoutSoriaBlock, LocationBlock],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                ProductsBlock,
+                LayoutSoriaBlock,
+                LayoutSoria2Block,
+                LocationBlock,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

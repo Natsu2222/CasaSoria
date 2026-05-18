@@ -307,6 +307,7 @@ export interface Page {
     | FormBlock
     | ProductsBlock
     | LayoutSoriaBlock
+    | LayoutSoria2Block
     | LocationBlock
   )[];
   meta?: {
@@ -1142,6 +1143,78 @@ export interface LayoutSoriaBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LayoutSoria2Block".
+ */
+export interface LayoutSoria2Block {
+  /**
+   * Opcional. ID para enlaces ancla (ej: compromiso). Solo letras, números, guiones y guión bajo.
+   */
+  anchorId?: string | null;
+  heading: string;
+  /**
+   * Texto bajo el título (párrafo introductorio).
+   */
+  description?: string | null;
+  /**
+   * Tarjetas blancas con número destacado y etiqueta (p. ej. 1000+ / Clientes satisfechos).
+   */
+  stats?:
+    | {
+        /**
+         * Ej.: 1000+, 25+
+         */
+        value: string;
+        /**
+         * Ej.: Clientes satisfechos
+         */
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  image: number | Media;
+  /**
+   * Si lo dejas vacío, se usa el alt de la imagen en la librería.
+   */
+  imageAlt?: string | null;
+  imagePosition?: ('right' | 'left') | null;
+  backgroundColor?: string | null;
+  headingColor?: string | null;
+  descriptionColor?: string | null;
+  statCardBackground?: string | null;
+  statNumberColor?: string | null;
+  statLabelColor?: string | null;
+  /**
+   * Tarjetas e imagen (mismo radio).
+   */
+  cornerRadius?: number | null;
+  /**
+   * Por defecto usa la misma tipografía que el hero MicroVisuals (Instrument Serif + Barlow).
+   */
+  fontFamily?:
+    | (
+        | 'default'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'layoutSoria2';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "LocationBlock".
  */
 export interface LocationBlock {
@@ -1597,6 +1670,7 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         productsBlock?: T | ProductsBlockSelect<T>;
         layoutSoria?: T | LayoutSoriaBlockSelect<T>;
+        layoutSoria2?: T | LayoutSoria2BlockSelect<T>;
         locationBlock?: T | LocationBlockSelect<T>;
       };
   meta?:
@@ -1782,6 +1856,35 @@ export interface LayoutSoriaBlockSelect<T extends boolean = true> {
   boldTextColor?: T;
   buttonBackgroundColor?: T;
   buttonTextColor?: T;
+  fontFamily?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LayoutSoria2Block_select".
+ */
+export interface LayoutSoria2BlockSelect<T extends boolean = true> {
+  anchorId?: T;
+  heading?: T;
+  description?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  image?: T;
+  imageAlt?: T;
+  imagePosition?: T;
+  backgroundColor?: T;
+  headingColor?: T;
+  descriptionColor?: T;
+  statCardBackground?: T;
+  statNumberColor?: T;
+  statLabelColor?: T;
+  cornerRadius?: T;
   fontFamily?: T;
   id?: T;
   blockName?: T;
