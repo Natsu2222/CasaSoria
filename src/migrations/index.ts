@@ -4,6 +4,7 @@ import * as migration_20260518_144714_location_and_servicios_soria_blocks from '
 import * as migration_20260518_154426 from './20260518_154426';
 import * as migration_20260519_101519 from './20260519_101519';
 import * as migration_20260519_115103_navbar_soria from './20260519_115103_navbar_soria';
+import * as migration_20260519_141612 from './20260519_141612';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260519_115103_navbar_soria.up,
     down: migration_20260519_115103_navbar_soria.down,
-    name: '20260519_115103_navbar_soria'
+    name: '20260519_115103_navbar_soria',
+  },
+  {
+    up: migration_20260519_141612.up,
+    down: migration_20260519_141612.down,
+    name: '20260519_141612'
   },
 ];

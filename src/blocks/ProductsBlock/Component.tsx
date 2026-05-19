@@ -7,6 +7,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
 import RichText from '@/components/RichText'
+import { resolveFontFamily } from '@/fields/fontFamilySelect'
 
 import { ProductsCarousel } from './ProductsCarousel'
 
@@ -28,9 +29,15 @@ export const ProductsBlock: React.FC<
     limit: limitFromProps,
     selectedProducts,
     carousel,
+    backgroundColor,
+    textColor,
+    titleFontFamily,
+    descriptionFontFamily,
   } = props
 
   const limit = limitFromProps || 12
+  const titleFont = resolveFontFamily(titleFontFamily)
+  const descriptionFont = resolveFontFamily(descriptionFontFamily)
 
   let products: ProductCard[] = []
 
@@ -85,14 +92,35 @@ export const ProductsBlock: React.FC<
     products = fetched.docs as ProductCard[]
   }
 
+  // We expose colour + font choices as CSS variables on the wrapper so they
+  // propagate to descendants (including RichText children) without needing
+  // inline styles on every node. Custom properties win over the defaults set
+  // by `.products-block-*` selectors in `globals.css`.
+  const sectionStyle = {
+    backgroundColor: backgroundColor ?? undefined,
+    ...(textColor ? { color: textColor, '--products-block-ink': textColor } : {}),
+    ...(titleFont ? { '--products-block-title-font': titleFont } : {}),
+    ...(descriptionFont ? { '--products-block-body-font': descriptionFont } : {}),
+  } as React.CSSProperties
+
+  // When a background colour is set the editor expects the section to read
+  // as a full-width band; otherwise we keep the original "container only"
+  // layout to avoid breaking existing pages.
+  const hasBackground = Boolean(backgroundColor)
+
   return (
-    <section id={`block-${id}`} className="container">
+    <section
+      id={`block-${id}`}
+      className={hasBackground ? 'products-block w-full py-16 md:py-24' : 'products-block container'}
+      style={sectionStyle}
+    >
+      <div className={hasBackground ? 'container' : ''}>
       <header className="relative max-w-3xl">
-        <div className="payload-block-display text-3xl tracking-tight text-[var(--payload-block-ink)] md:text-4xl">
+        <div className="products-block-title payload-block-display text-3xl tracking-tight md:text-4xl">
           {title ? <RichText className="payload-block-prose mb-0 max-w-none !text-inherit" data={title} enableGutter={false} /> : null}
         </div>
         {description ? (
-          <div className="payload-block-prose mt-5 max-w-2xl text-[color-mix(in_oklch,var(--muted-foreground)_88%,var(--payload-block-ink))]">
+          <div className="products-block-description payload-block-prose mt-5 max-w-2xl">
             <RichText className="mb-0" data={description} enableGutter={false} />
           </div>
         ) : null}
@@ -126,11 +154,11 @@ export const ProductsBlock: React.FC<
               </div>
 
               <div className="relative flex flex-1 flex-col gap-3 px-6 pb-7 pt-6">
-                <div className="payload-block-display text-xl leading-snug text-[var(--payload-block-ink)] group-hover:text-[color-mix(in_oklch,var(--payload-block-ink)_75%,var(--payload-block-accent))] transition-colors duration-300 md:text-[1.35rem]">
+                <div className="products-block-card-title payload-block-display text-xl leading-snug group-hover:text-[color-mix(in_oklch,var(--payload-block-ink)_75%,var(--payload-block-accent))] transition-colors duration-300 md:text-[1.35rem]">
                   {p.title}
                 </div>
                 {p.shortDescription ? (
-                  <p className="payload-block-prose line-clamp-3 text-[0.98rem] leading-relaxed text-muted-foreground">{p.shortDescription}</p>
+                  <p className="products-block-card-description payload-block-prose line-clamp-3 text-[0.98rem] leading-relaxed">{p.shortDescription}</p>
                 ) : null}
                 <div className="mt-auto flex items-end justify-between gap-4 border-t border-[color-mix(in_oklch,var(--border)_75%,transparent)] pt-5">
                   <span className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
@@ -147,6 +175,7 @@ export const ProductsBlock: React.FC<
       {products.length === 0 && !carousel ? (
         <p className="payload-block-prose mt-14 text-muted-foreground">No products yet.</p>
       ) : null}
+      </div>
     </section>
   )
 }

@@ -109,11 +109,11 @@ export const ProductsCarousel: React.FC<Props> = ({ products }) => {
             </div>
 
             <div className="relative flex flex-1 flex-col gap-3 px-6 pb-7 pt-6">
-              <div className="payload-block-display text-xl leading-snug text-[var(--payload-block-ink)] group-hover:text-[color-mix(in_oklch,var(--payload-block-ink)_75%,var(--payload-block-accent))] transition-colors duration-300 md:text-[1.35rem]">
+              <div className="products-block-card-title payload-block-display text-xl leading-snug group-hover:text-[color-mix(in_oklch,var(--payload-block-ink)_75%,var(--payload-block-accent))] transition-colors duration-300 md:text-[1.35rem]">
                 {p.title}
               </div>
               {p.shortDescription ? (
-                <p className="payload-block-prose line-clamp-3 text-[0.98rem] leading-relaxed text-muted-foreground">
+                <p className="products-block-card-description payload-block-prose line-clamp-3 text-[0.98rem] leading-relaxed">
                   {p.shortDescription}
                 </p>
               ) : null}

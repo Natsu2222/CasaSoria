@@ -1155,6 +1155,60 @@ export interface ProductsBlock {
    * Si está activado, los productos se muestran en un carrusel horizontal en lugar de la cuadrícula apilada.
    */
   carousel?: boolean | null;
+  /**
+   * Opcional. Cualquier color CSS válido (#hex, rgb, oklch...). Ej.: #f6f3ec
+   */
+  backgroundColor?: string | null;
+  /**
+   * Opcional. Color base del título, descripción y tarjetas. Ej.: #1a1a1a
+   */
+  textColor?: string | null;
+  /**
+   * Por defecto usa la tipografía editorial del bloque.
+   */
+  titleFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Tipografía aplicada al texto descriptivo y a las tarjetas de producto.
+   */
+  descriptionFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'productsBlock';
@@ -1478,6 +1532,60 @@ export interface LocationBlock {
    * Hint shown to Google for local listings. Not displayed on the page.
    */
   priceRange?: ('€' | '€€' | '€€€') | null;
+  /**
+   * Opcional. Cualquier color CSS válido (#hex, rgb, oklch...). Ej.: #f6f3ec
+   */
+  backgroundColor?: string | null;
+  /**
+   * Opcional. Color base aplicado al título y al texto de la dirección. Ej.: #1a1a1a
+   */
+  textColor?: string | null;
+  /**
+   * Aplica al nombre del negocio.
+   */
+  headingFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Aplica a la descripción, dirección, teléfono y horarios.
+   */
+  bodyFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'locationBlock';
@@ -2282,6 +2390,10 @@ export interface ProductsBlockSelect<T extends boolean = true> {
   limit?: T;
   selectedProducts?: T;
   carousel?: T;
+  backgroundColor?: T;
+  textColor?: T;
+  titleFontFamily?: T;
+  descriptionFontFamily?: T;
   id?: T;
   blockName?: T;
 }
@@ -2413,6 +2525,10 @@ export interface LocationBlockSelect<T extends boolean = true> {
         id?: T;
       };
   priceRange?: T;
+  backgroundColor?: T;
+  textColor?: T;
+  headingFontFamily?: T;
+  bodyFontFamily?: T;
   id?: T;
   blockName?: T;
 }

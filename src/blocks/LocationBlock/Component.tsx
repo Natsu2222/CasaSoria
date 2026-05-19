@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { resolveFontFamily } from '@/fields/fontFamilySelect'
+
 // We define props locally instead of importing from `@/payload-types` so the
 // component compiles cleanly the first time you pull this code, before
 // Payload has had a chance to regenerate types. After your next `pnpm dev`
@@ -41,6 +43,10 @@ type LocationBlockProps = {
   } | null
   openingHours?: OpeningHour[] | null
   priceRange?: string | null
+  backgroundColor?: string | null
+  textColor?: string | null
+  headingFontFamily?: string | null
+  bodyFontFamily?: string | null
   blockType?: 'locationBlock'
   blockName?: string | null
   id?: string | null
@@ -70,6 +76,10 @@ export const LocationBlock: React.FC<LocationBlockProps> = (props) => {
     geo,
     openingHours,
     priceRange,
+    backgroundColor,
+    textColor,
+    headingFontFamily,
+    bodyFontFamily,
   } = props
 
   // Defense in depth: even though the field-level validator restricts this,
@@ -90,19 +100,49 @@ export const LocationBlock: React.FC<LocationBlockProps> = (props) => {
     priceRange,
   })
 
+  const headingFont = resolveFontFamily(headingFontFamily)
+  const bodyFont = resolveFontFamily(bodyFontFamily)
+
+  // Expose colour + font choices as CSS variables so they cascade to all the
+  // text inside the block (heading + address + opening hours) without
+  // having to set inline styles on every node.
+  const sectionStyle = {
+    backgroundColor: backgroundColor ?? undefined,
+    ...(textColor ? { color: textColor } : {}),
+    ...(headingFont ? { '--location-block-heading-font': headingFont } : {}),
+    ...(bodyFont ? { '--location-block-body-font': bodyFont } : {}),
+  } as React.CSSProperties
+
+  // Same behaviour as ProductsBlock: full-width band when a background is
+  // chosen, plain container otherwise so we don't break existing layouts.
+  const hasBackground = Boolean(backgroundColor)
+
   return (
-    <section className="container" aria-labelledby="location-heading">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
+    <section
+      className={hasBackground ? 'location-block w-full py-16 md:py-24' : 'location-block container'}
+      style={sectionStyle}
+      aria-labelledby="location-heading"
+    >
+      <div
+        className={
+          hasBackground
+            ? 'container grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch'
+            : 'grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch'
+        }
+      >
         <div className="flex flex-col">
-          <h2 id="location-heading" className="text-3xl font-semibold tracking-tight mb-2">
+          <h2
+            id="location-heading"
+            className="location-block-heading text-3xl font-semibold tracking-tight mb-2"
+          >
             {businessName}
           </h2>
 
           {description ? (
-            <p className="text-muted-foreground mb-6">{description}</p>
+            <p className="location-block-body mb-6 opacity-80">{description}</p>
           ) : null}
 
-          <address className="not-italic space-y-4 text-base">
+          <address className="location-block-body not-italic space-y-4 text-base">
             <div>
               <div className="font-medium mb-1">Address</div>
               <div>{address?.streetAddress}</div>

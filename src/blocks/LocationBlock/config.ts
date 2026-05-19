@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { fontFamilySelectField } from '@/fields/fontFamilySelect'
+
 // Days of the week for opening hours. The values match schema.org DayOfWeek
 // constants so we can pass them straight into JSON-LD without translation.
 const DAYS_OF_WEEK = [
@@ -213,6 +215,59 @@ export const LocationBlock: Block = {
         { label: '€  (budget)', value: '€' },
         { label: '€€ (mid-range)', value: '€€' },
         { label: '€€€ (premium)', value: '€€€' },
+      ],
+    },
+
+    // ── Apariencia (color de fondo + tipografías) ────────────────────────────
+    {
+      type: 'collapsible',
+      label: 'Apariencia',
+      admin: { initCollapsed: true },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'backgroundColor',
+              type: 'text',
+              label: 'Color de fondo',
+              admin: {
+                width: '50%',
+                description:
+                  'Opcional. Cualquier color CSS válido (#hex, rgb, oklch...). Ej.: #f6f3ec',
+                placeholder: '#f6f3ec',
+              },
+            },
+            {
+              name: 'textColor',
+              type: 'text',
+              label: 'Color de texto',
+              admin: {
+                width: '50%',
+                description:
+                  'Opcional. Color base aplicado al título y al texto de la dirección. Ej.: #1a1a1a',
+                placeholder: '#1a1a1a',
+              },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            fontFamilySelectField({
+              name: 'headingFontFamily',
+              label: 'Tipografía del título',
+              width: '50%',
+              description: 'Aplica al nombre del negocio.',
+            }),
+            fontFamilySelectField({
+              name: 'bodyFontFamily',
+              label: 'Tipografía del texto',
+              width: '50%',
+              description: 'Aplica a la descripción, dirección, teléfono y horarios.',
+            }),
+          ],
+        },
       ],
     },
   ],

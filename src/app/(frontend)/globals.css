@@ -505,3 +505,41 @@ html[data-theme='light'] {
   text-transform: uppercase;
   line-height: 1.4;
 }
+
+/* ────────────────────────────────────────────────────────────────────────
+ * Products block — editor-configurable typography. Defaults inherit the
+ * project's "payload-block" editorial look; when the admin picks a font,
+ * the block sets `--products-block-title-font` / `--products-block-body-font`
+ * on its wrapper and these selectors propagate the choice into the heading,
+ * description and product cards (so all the text feels coherent).
+ * ──────────────────────────────────────────────────────────────────────── */
+.products-block-title :where(h1, h2, h3, h4, p, span, em, strong) {
+  font-family: var(--products-block-title-font, inherit);
+}
+
+.products-block-description :where(h1, h2, h3, h4, p, span, em, strong, li, a) {
+  font-family: var(--products-block-body-font, inherit);
+}
+
+.products-block-card-title {
+  font-family: var(--products-block-title-font, inherit);
+  color: var(--products-block-ink, var(--payload-block-ink));
+}
+
+.products-block-card-description {
+  font-family: var(--products-block-body-font, inherit);
+  color: color-mix(in oklch, var(--products-block-ink, var(--muted-foreground)) 70%, transparent);
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+ * Location block — same pattern as the products block: the heading and body
+ * text inherit the admin-chosen font through CSS variables.
+ * ──────────────────────────────────────────────────────────────────────── */
+.location-block-heading {
+  font-family: var(--location-block-heading-font, inherit);
+}
+
+.location-block-body,
+.location-block-body :where(div, span, a, li, p, strong, em) {
+  font-family: var(--location-block-body-font, inherit);
+}
