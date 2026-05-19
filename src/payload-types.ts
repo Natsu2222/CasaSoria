@@ -163,7 +163,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'microVisuals';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'microVisuals' | 'heroSoria';
     richText?: {
       root: {
         type: string;
@@ -297,6 +297,207 @@ export interface Page {
         label: string;
       };
       showSecondaryIcon?: boolean | null;
+    };
+    heroSoria?: {
+      /**
+       * Opcional. Línea breve sobre el título principal.
+       */
+      eyebrow?: {
+        root: {
+          type: string;
+          children: {
+            type: any;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      /**
+       * Encabezado principal. Por defecto se renderiza con el mismo estilo display que MicroVisuals.
+       */
+      title?: {
+        root: {
+          type: string;
+          children: {
+            type: any;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      /**
+       * Texto descriptivo bajo el título.
+       */
+      subtitle?: {
+        root: {
+          type: string;
+          children: {
+            type: any;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      /**
+       * Hasta dos botones bajo el subtítulo. Cada botón es un link normal de Payload (puede apuntar a una página interna o a una URL externa).
+       */
+      buttons?:
+        | {
+            link: {
+              type?: ('reference' | 'custom') | null;
+              newTab?: boolean | null;
+              reference?:
+                | ({
+                    relationTo: 'pages';
+                    value: number | Page;
+                  } | null)
+                | ({
+                    relationTo: 'posts';
+                    value: number | Post;
+                  } | null);
+              url?: string | null;
+              label: string;
+            };
+            appearance?: ('primary' | 'secondary') | null;
+            /**
+             * Por defecto, la tipografía del cuerpo de texto del hero.
+             */
+            fontFamily?:
+              | (
+                  | 'default'
+                  | '"Instrument Serif", serif'
+                  | 'Arial, sans-serif'
+                  | '"Times New Roman", serif'
+                  | 'Georgia, serif'
+                  | 'Verdana, sans-serif'
+                  | 'Helvetica, Arial, sans-serif'
+                  | '"Courier New", monospace'
+                  | '"Roboto", sans-serif'
+                  | '"Open Sans", sans-serif'
+                  | '"Lato", sans-serif'
+                  | '"Montserrat", sans-serif'
+                  | '"Playfair Display", serif'
+                  | '"Inter", sans-serif'
+                  | '"Poppins", sans-serif'
+                  | '"Raleway", sans-serif'
+                )
+              | null;
+            /**
+             * Opcional. Ej.: #111111 o oklch(0.2 0 0).
+             */
+            backgroundColor?: string | null;
+            textColor?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * Cada elemento es una "polaroid" mostrada en la fila bajo los botones. El orden importa: las tarjetas se inclinan automáticamente alternando ±, salvo que sobrescribas el ángulo.
+       */
+      gallery?:
+        | {
+            image: number | Media;
+            /**
+             * Opcional. Si lo dejas vacío, las tarjetas se inclinan alternando ±5° en función del orden.
+             */
+            rotation?: number | null;
+            alt?: string | null;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * Opcional. Cualquier color CSS (#hex, rgb, oklch…).
+       */
+      titleColor?: string | null;
+      /**
+       * Por defecto usa el estilo display del hero MicroVisuals.
+       */
+      titleFontFamily?:
+        | (
+            | 'default'
+            | '"Instrument Serif", serif'
+            | 'Arial, sans-serif'
+            | '"Times New Roman", serif'
+            | 'Georgia, serif'
+            | 'Verdana, sans-serif'
+            | 'Helvetica, Arial, sans-serif'
+            | '"Courier New", monospace'
+            | '"Roboto", sans-serif'
+            | '"Open Sans", sans-serif'
+            | '"Lato", sans-serif'
+            | '"Montserrat", sans-serif'
+            | '"Playfair Display", serif'
+            | '"Inter", sans-serif'
+            | '"Poppins", sans-serif'
+            | '"Raleway", sans-serif'
+          )
+        | null;
+      subtitleColor?: string | null;
+      /**
+       * Por defecto usa el cuerpo de texto MicroVisuals (Barlow).
+       */
+      subtitleFontFamily?:
+        | (
+            | 'default'
+            | '"Instrument Serif", serif'
+            | 'Arial, sans-serif'
+            | '"Times New Roman", serif'
+            | 'Georgia, serif'
+            | 'Verdana, sans-serif'
+            | 'Helvetica, Arial, sans-serif'
+            | '"Courier New", monospace'
+            | '"Roboto", sans-serif'
+            | '"Open Sans", sans-serif'
+            | '"Lato", sans-serif'
+            | '"Montserrat", sans-serif'
+            | '"Playfair Display", serif'
+            | '"Inter", sans-serif'
+            | '"Poppins", sans-serif'
+            | '"Raleway", sans-serif'
+          )
+        | null;
+      eyebrowColor?: string | null;
+      /**
+       * Por defecto usa la misma tipografía que el hero MicroVisuals (Instrument Serif + Barlow).
+       */
+      eyebrowFontFamily?:
+        | (
+            | 'default'
+            | '"Instrument Serif", serif'
+            | 'Arial, sans-serif'
+            | '"Times New Roman", serif'
+            | 'Georgia, serif'
+            | 'Verdana, sans-serif'
+            | 'Helvetica, Arial, sans-serif'
+            | '"Courier New", monospace'
+            | '"Roboto", sans-serif'
+            | '"Open Sans", sans-serif'
+            | '"Lato", sans-serif'
+            | '"Montserrat", sans-serif'
+            | '"Playfair Display", serif'
+            | '"Inter", sans-serif'
+            | '"Poppins", sans-serif'
+            | '"Raleway", sans-serif'
+          )
+        | null;
+      /**
+       * Opcional. Por defecto, un degradado suave crema → blanco como en la referencia.
+       */
+      backgroundColor?: string | null;
     };
   };
   layout: (
@@ -1905,6 +2106,46 @@ export interface PagesSelect<T extends boolean = true> {
                   };
               showSecondaryIcon?: T;
             };
+        heroSoria?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              subtitle?: T;
+              buttons?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                        };
+                    appearance?: T;
+                    fontFamily?: T;
+                    backgroundColor?: T;
+                    textColor?: T;
+                    id?: T;
+                  };
+              gallery?:
+                | T
+                | {
+                    image?: T;
+                    rotation?: T;
+                    alt?: T;
+                    id?: T;
+                  };
+              titleColor?: T;
+              titleFontFamily?: T;
+              subtitleColor?: T;
+              subtitleFontFamily?: T;
+              eyebrowColor?: T;
+              eyebrowFontFamily?: T;
+              backgroundColor?: T;
+            };
       };
   layout?:
     | T
@@ -2699,6 +2940,10 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
+  /**
+   * Elige qué navbar quieres usar en la web. Al cambiar de tipo, los campos específicos se mostrarán u ocultarán automáticamente.
+   */
+  type: 'default' | 'navbarSoria';
   navItems?:
     | {
         link: {
@@ -2719,6 +2964,75 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Variante del header con logotipo + barra lateral de menús. En escritorio se muestran los items en línea; en móvil se abre un panel lateral.
+   */
+  navbarSoria?: {
+    /**
+     * Imagen del logotipo (preferiblemente SVG o PNG con fondo transparente).
+     */
+    logo?: (number | null) | Media;
+    /**
+     * Se muestra junto al logotipo o como reemplazo si no hay imagen. Ej.: "Casa Soria".
+     */
+    logoText?: string | null;
+    /**
+     * Lista de enlaces que se muestran en la barra (horizontal en escritorio y dentro del panel lateral en móvil).
+     */
+    sidebarItems?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'posts';
+                  value: number | Post;
+                } | null);
+            url?: string | null;
+            label: string;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Botón destacado al final del menú (por ejemplo, "Reservar"). Déjalo vacío si no quieres mostrarlo.
+     */
+    cta: {
+      link: {
+        type?: ('reference' | 'custom') | null;
+        newTab?: boolean | null;
+        reference?:
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        url?: string | null;
+        label: string;
+      };
+    };
+    /**
+     * Opcional. Cualquier color CSS (#hex, rgb, oklch…).
+     */
+    backgroundColor?: string | null;
+    textColor?: string | null;
+    /**
+     * Si lo activas, el navbar queda siempre fijo arriba. Si lo dejas desactivado, el navbar se oculta al hacer scroll hacia abajo y vuelve a bajar al hacer scroll hacia arriba.
+     */
+    sticky?: boolean | null;
+    /**
+     * Si lo activas, el menú lateral se abre siempre con el botón hamburguesa (también en pantallas grandes).
+     */
+    showHamburgerOnDesktop?: boolean | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2756,6 +3070,7 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  type?: T;
   navItems?:
     | T
     | {
@@ -2769,6 +3084,43 @@ export interface HeaderSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  navbarSoria?:
+    | T
+    | {
+        logo?: T;
+        logoText?: T;
+        sidebarItems?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        cta?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+            };
+        backgroundColor?: T;
+        textColor?: T;
+        sticky?: T;
+        showHamburgerOnDesktop?: T;
       };
   updatedAt?: T;
   createdAt?: T;

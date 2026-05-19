@@ -10,6 +10,7 @@ import {
 import { linkGroup } from '@/fields/linkGroup'
 
 import { microVisualsGroupField } from '@/heros/microVisualsFields'
+import { heroSoriaGroupField } from '@/heros/heroSoriaFields'
 
 export const hero: Field = {
   name: 'hero',
@@ -41,6 +42,10 @@ export const hero: Field = {
           label: 'MicroVisuals (fullscreen)',
           value: 'microVisuals',
         },
+        {
+          label: 'Hero Soria (polaroids)',
+          value: 'heroSoria',
+        },
       ],
       required: true,
     },
@@ -48,7 +53,8 @@ export const hero: Field = {
       name: 'richText',
       type: 'richText',
       admin: {
-        condition: (_, { type } = {}) => type !== 'microVisuals',
+        // Hide the legacy richText for hero types that bring their own copy fields.
+        condition: (_, { type } = {}) => !['microVisuals', 'heroSoria'].includes(type),
       },
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
@@ -66,7 +72,7 @@ export const hero: Field = {
       overrides: {
         maxRows: 2,
         admin: {
-          condition: (_, { type } = {}) => type !== 'microVisuals',
+          condition: (_, { type } = {}) => !['microVisuals', 'heroSoria'].includes(type),
         },
       },
     }),
@@ -86,6 +92,7 @@ export const hero: Field = {
       }) satisfies Validate,
     },
     microVisualsGroupField,
+    heroSoriaGroupField,
   ],
   label: false,
 }

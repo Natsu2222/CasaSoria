@@ -8,6 +8,7 @@ import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
+import { NavbarSoria } from './NavbarSoria'
 
 interface HeaderClientProps {
   data: Header
@@ -28,6 +29,18 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
+
+  // Render the Navbar Soria variant when selected from the admin. The legacy
+  // header is kept untouched as the default, so existing installations keep
+  // working without changes.
+  //
+  // We render `<NavbarSoria>` directly (no wrapper) and forward the theme as
+  // a prop so the `data-theme` attribute lands on the `<header>` itself.
+  // A wrapping `<div>` would become the sticky containing block and break
+  // `position: sticky` since its height equals the header.
+  if (data?.type === 'navbarSoria') {
+    return <NavbarSoria data={data} dataTheme={theme} />
+  }
 
   return (
     <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>

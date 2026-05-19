@@ -7,6 +7,7 @@ import { draftMode } from 'next/headers'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { Media } from '@/components/Media'
+import RichText from '@/components/RichText'
 import { ReserveForm } from './ReserveForm'
 
 type Args = {
@@ -68,8 +69,19 @@ export default async function ProductPage({ params: paramsPromise }: Args) {
               </div>
             ) : null}
 
-            <div className="prose dark:prose-invert max-w-none mt-8">
-              {product.shortDescription ? <p>{product.shortDescription}</p> : null}
+            <div className="mt-8 space-y-6">
+              {product.shortDescription ? (
+                <div className="prose dark:prose-invert max-w-none">
+                  <p className="lead">{product.shortDescription}</p>
+                </div>
+              ) : null}
+              {product.description ? (
+                <RichText
+                  data={product.description}
+                  enableGutter={false}
+                  className="max-w-none"
+                />
+              ) : null}
             </div>
           </div>
 
