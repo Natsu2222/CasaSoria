@@ -35,7 +35,7 @@ export const RenderBlocks: React.FC<{
 
   if (hasBlocks) {
     return (
-      <div className="payload-blocks-root flex flex-col gap-24 md:gap-32" data-payload-blocks="">
+      <div className="payload-blocks-root flex flex-col" data-payload-blocks="">
         {blocks.map((block, index) => {
           const { blockType } = block
 
