@@ -5,6 +5,7 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
+import { FAQsBlock } from '../../blocks/FAQs/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { LayoutSoriaBlock } from '../../blocks/LayoutSoria/config'
 import { LayoutSoria2Block } from '../../blocks/LayoutSoria2/config'
@@ -88,6 +89,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 LayoutSoria2Block,
                 LocationBlock,
                 ServiciosSoriaBlock,
+                FAQsBlock,
               ],
               required: true,
               admin: {

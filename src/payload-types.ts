@@ -511,6 +511,7 @@ export interface Page {
     | LayoutSoria2Block
     | LocationBlock
     | ServiciosSoriaBlock
+    | FAQsBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1832,6 +1833,233 @@ export interface ServiciosSoriaBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQsBlock".
+ */
+export interface FAQsBlock {
+  /**
+   * ID opcional para enlaces ancla (ej: preguntas-frecuentes).
+   */
+  anchorId?: string | null;
+  /**
+   * Encabezado principal del bloque (ej: "Preguntas frecuentes").
+   */
+  title?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Texto breve bajo el título.
+   */
+  subtitle?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Cada elemento es una pregunta con su respuesta desplegable.
+   */
+  items?:
+    | {
+        question: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        /**
+         * Si está marcada, la pregunta se mostrará abierta al cargar la página.
+         */
+        defaultOpen?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Si está desactivado, al abrir una pregunta se cerrarán las demás (modo acordeón).
+   */
+  allowMultipleOpen?: boolean | null;
+  /**
+   * Cualquier color CSS (#hex, rgb, oklch...). Por defecto: negro.
+   */
+  backgroundColor?: string | null;
+  /**
+   * Por defecto: 64rem. Ej: 48rem, 800px, 100%.
+   */
+  maxWidth?: string | null;
+  /**
+   * Por defecto: blanco.
+   */
+  titleColor?: string | null;
+  /**
+   * Por defecto usa la misma tipografía que el hero MicroVisuals (Instrument Serif + Barlow).
+   */
+  titleFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Por defecto: gris claro.
+   */
+  subtitleColor?: string | null;
+  /**
+   * Por defecto usa la misma tipografía que el hero MicroVisuals (Instrument Serif + Barlow).
+   */
+  subtitleFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Por defecto: blanco.
+   */
+  cardBackgroundColor?: string | null;
+  /**
+   * Por defecto: transparente.
+   */
+  cardBorderColor?: string | null;
+  /**
+   * Por defecto: negro.
+   */
+  questionColor?: string | null;
+  /**
+   * Por defecto usa la misma tipografía que el hero MicroVisuals (Instrument Serif + Barlow).
+   */
+  questionFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Por defecto: gris oscuro.
+   */
+  answerColor?: string | null;
+  /**
+   * Por defecto usa la misma tipografía que el hero MicroVisuals (Instrument Serif + Barlow).
+   */
+  answerFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Por defecto: verde oscuro.
+   */
+  iconBackgroundColor?: string | null;
+  /**
+   * Por defecto: blanco.
+   */
+  iconColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqs';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "reservations".
  */
 export interface Reservation {
@@ -2268,6 +2496,7 @@ export interface PagesSelect<T extends boolean = true> {
         layoutSoria2?: T | LayoutSoria2BlockSelect<T>;
         locationBlock?: T | LocationBlockSelect<T>;
         serviciosSoria?: T | ServiciosSoriaBlockSelect<T>;
+        faqs?: T | FAQsBlockSelect<T>;
       };
   meta?:
     | T
@@ -2570,6 +2799,40 @@ export interface ServiciosSoriaBlockSelect<T extends boolean = true> {
   ctaBackgroundColor?: T;
   ctaTextColor?: T;
   ctaFontFamily?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQsBlock_select".
+ */
+export interface FAQsBlockSelect<T extends boolean = true> {
+  anchorId?: T;
+  title?: T;
+  subtitle?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        defaultOpen?: T;
+        id?: T;
+      };
+  allowMultipleOpen?: T;
+  backgroundColor?: T;
+  maxWidth?: T;
+  titleColor?: T;
+  titleFontFamily?: T;
+  subtitleColor?: T;
+  subtitleFontFamily?: T;
+  cardBackgroundColor?: T;
+  cardBorderColor?: T;
+  questionColor?: T;
+  questionFontFamily?: T;
+  answerColor?: T;
+  answerFontFamily?: T;
+  iconBackgroundColor?: T;
+  iconColor?: T;
   id?: T;
   blockName?: T;
 }

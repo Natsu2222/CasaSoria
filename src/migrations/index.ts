@@ -5,6 +5,7 @@ import * as migration_20260518_154426 from './20260518_154426';
 import * as migration_20260519_101519 from './20260519_101519';
 import * as migration_20260519_115103_navbar_soria from './20260519_115103_navbar_soria';
 import * as migration_20260519_141612 from './20260519_141612';
+import * as migration_20260520_094104_faqs_block from './20260520_094104_faqs_block';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260519_141612.up,
     down: migration_20260519_141612.down,
-    name: '20260519_141612'
+    name: '20260519_141612',
+  },
+  {
+    up: migration_20260520_094104_faqs_block.up,
+    down: migration_20260520_094104_faqs_block.down,
+    name: '20260520_094104_faqs_block'
   },
 ];

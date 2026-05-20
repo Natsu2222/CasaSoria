@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
@@ -57,6 +58,14 @@ export const NavbarSoria: React.FC<NavbarSoriaProps> = ({ data, dataTheme }) => 
   const logoIntrinsicHeight = logoMedia?.height ?? 80
 
   const [open, setOpen] = useState(false)
+
+  // Track when the component has mounted on the client so we can safely
+  // render the drawer through a portal. Portals need access to the DOM,
+  // which isn't available during SSR.
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Auto-hide behaviour: when `pinned` is false the navbar slides out of view
   // as the user scrolls down and drops back in as soon as they scroll up,
@@ -200,73 +209,90 @@ export const NavbarSoria: React.FC<NavbarSoriaProps> = ({ data, dataTheme }) => 
       </div>
 
       {/* ── Drawer (mobile / forced) ───────────────────────────────────── */}
-      <div
-        id="navbar-soria-drawer"
-        className={cn(
-          'fixed inset-0 z-40 transition-[visibility]',
-          open ? 'visible' : 'invisible delay-300',
-        )}
-        aria-hidden={!open}
-      >
-        {/* Backdrop */}
-        <div
-          className={cn(
-            'absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300',
-            open ? 'opacity-100' : 'opacity-0',
-          )}
-          onClick={() => setOpen(false)}
-        />
-
-        {/* Panel */}
-        <aside
-          className={cn(
-            'absolute right-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-background shadow-2xl transition-transform duration-300 ease-out',
-            open ? 'translate-x-0' : 'translate-x-full',
-          )}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Menú"
-        >
-          <div className="flex items-center justify-between gap-4 border-b border-foreground/10 px-6 py-5">
-            <span className="text-sm font-medium uppercase tracking-[0.25em] text-foreground/60">
-              Menú
-            </span>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-foreground/15 transition-colors hover:bg-foreground/5"
-              aria-label="Cerrar menú"
+      {/*
+        Rendered through a portal at the end of <body> so it escapes the
+        header's transform context. Without the portal, `position: fixed`
+        descendants get confined to the transformed/will-change-transform
+        header element — clipping the drawer behind page content.
+      */}
+      {mounted
+        ? createPortal(
+            <div
+              id="navbar-soria-drawer"
+              className={cn(
+                'fixed inset-0 z-[100] transition-[visibility]',
+                open ? 'visible' : 'invisible delay-300',
+              )}
+              aria-hidden={!open}
             >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-
-          <nav
-            className="flex flex-1 flex-col gap-1 overflow-y-auto px-6 py-6"
-            aria-label="Menú lateral"
-          >
-            {items.map(({ link, id }, i) => (
-              <CMSLink
-                key={id ?? i}
-                {...link}
-                appearance="inline"
-                className="block rounded-lg px-3 py-3 text-lg font-medium transition-colors hover:bg-foreground/5"
-              />
-            ))}
-
-            {cta?.label ? (
-              <CMSLink
-                {...cta}
-                appearance="inline"
+              {/* Backdrop */}
+              <div
                 className={cn(
-                  'mt-6 inline-flex items-center justify-center rounded-full px-5 py-3 text-base font-medium',
-                  'bg-foreground text-background transition-transform hover:scale-[1.02]',
+                  'absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300',
+                  open ? 'opacity-100' : 'opacity-0',
                 )}
+                onClick={() => setOpen(false)}
               />
-            ) : null}
-          </nav>
-        </aside>
-      </div>
+
+              {/* Panel */}
+              <aside
+                className={cn(
+                  'absolute right-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-background shadow-2xl transition-transform duration-300 ease-out',
+                  open ? 'translate-x-0' : 'translate-x-full',
+                )}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Menú"
+              >
+                <div className="flex items-center justify-between gap-4 border-b border-foreground/10 px-6 py-5">
+                  <span className="text-sm font-medium uppercase tracking-[0.25em] text-foreground/60">
+                    Menú
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-foreground/15 transition-colors hover:bg-foreground/5"
+                    aria-label="Cerrar menú"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+
+                <nav
+                  className="flex flex-1 flex-col gap-1 overflow-y-auto px-6 py-6"
+                  aria-label="Menú lateral"
+                  // Close the drawer whenever the user clicks any link inside.
+                  // We delegate via the parent instead of wrapping each link so
+                  // CMSLink stays untouched.
+                  onClick={(event) => {
+                    if ((event.target as HTMLElement).closest('a')) setOpen(false)
+                  }}
+                >
+                  {items.map(({ link, id }, i) => (
+                    <CMSLink
+                      key={id ?? i}
+                      {...link}
+                      appearance="inline"
+                      className="block rounded-lg px-3 py-3 text-lg font-medium transition-colors hover:bg-foreground/5"
+                    />
+                  ))}
+
+                  {cta?.label ? (
+                    <CMSLink
+                      {...cta}
+                      appearance="inline"
+                      className={cn(
+                        'mt-6 inline-flex items-center justify-center rounded-full px-5 py-3 text-base font-medium',
+                        'bg-foreground text-background transition-transform hover:scale-[1.02]',
+                      )}
+                    />
+                  ) : null}
+                </nav>
+              </aside>
+            </div>,
+            document.body,
+          )
+        : null}
     </header>
   )
 }
