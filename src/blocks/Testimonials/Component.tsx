@@ -176,12 +176,13 @@ export const TestimonialsBlock: React.FC<TestimonialsProps> = ({
 
   const resolvedMaxWidth = maxWidth ?? '100%'
   const isFullBleed = resolvedMaxWidth === '100%' || resolvedMaxWidth === '100vw'
+  const accent = accentColor ?? '#143b5b'
 
   return (
     <section
       id={anchorId ?? undefined}
       className="relative w-full overflow-hidden"
-      style={{ backgroundColor: backgroundColor ?? '#ffffff' }}
+      style={{ backgroundColor: backgroundColor ?? accent }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => {
         interactedRef.current = false
@@ -192,19 +193,13 @@ export const TestimonialsBlock: React.FC<TestimonialsProps> = ({
         className={cn('w-full', !isFullBleed && 'mx-auto')}
         style={{ maxWidth: resolvedMaxWidth }}
       >
+        {/* ── Contenedor principal ─────────────────────────────────────── */}
         <div
-          className="relative w-full lg:min-h-[532px]"
-          style={{ minHeight: minHeight ?? '460px' }}
+          className="relative w-full min-h-[640px] sm:min-h-[680px] lg:min-h-[532px]"
+          style={minHeight ? { minHeight } : undefined}
         >
-          {/* ── Panel de color decorativo (banda derecha, 32%) ─────────── */}
-          <div
-            aria-hidden
-            className="absolute inset-y-0 right-0 hidden w-[32%] lg:block"
-            style={{ backgroundColor: accentColor ?? '#143b5b' }}
-          />
-
-          {/* ── Imagen de fondo (panel izquierdo, 68%) ──────────────────── */}
-          <div className="relative h-[420px] w-full overflow-hidden sm:h-[480px] lg:absolute lg:inset-y-0 lg:left-0 lg:h-full lg:w-[68%]">
+          {/* Imagen: arriba en móvil (≈48%), izquierda en desktop (68%) */}
+          <div className="absolute inset-x-0 top-0 h-[48%] overflow-hidden sm:h-[46%] lg:inset-y-0 lg:left-0 lg:h-full lg:w-[68%]">
             <Image
               src={bgUrl}
               alt={bgAlt}
@@ -215,18 +210,25 @@ export const TestimonialsBlock: React.FC<TestimonialsProps> = ({
             />
           </div>
 
-          {/* ── Tarjeta: centrada 50/50 sobre el límite imagen / panel ─── */}
-          <div className="relative z-10 mx-auto -mt-24 w-full max-w-md px-4 sm:-mt-32 sm:px-6 lg:absolute lg:top-1/2 lg:left-[68%] lg:mt-0 lg:w-[471px] lg:max-w-none lg:-translate-x-1/2 lg:-translate-y-1/2 lg:px-0">
+          {/* Panel decorativo: abajo en móvil (≈52%), derecha en desktop (32%) */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-[52%] sm:h-[54%] lg:inset-y-0 lg:right-0 lg:left-auto lg:h-full lg:w-[32%]"
+            style={{ backgroundColor: accent }}
+          />
+
+          {/* Tarjeta: 50/50 sobre el límite imagen/panel en ambos breakpoints */}
+          <div className="absolute top-[48%] left-1/2 z-10 w-[calc(100%-2.5rem)] max-w-[360px] -translate-x-1/2 -translate-y-1/2 sm:top-[46%] sm:max-w-[400px] lg:top-1/2 lg:left-[68%] lg:w-[471px] lg:max-w-none">
             <article
-              className="relative flex min-h-[420px] flex-col rounded-sm px-6 pb-10 pt-10 sm:px-10 sm:pb-12 sm:pt-12 lg:h-[532px] lg:w-[471px] lg:px-12 lg:pb-10 lg:pt-12"
+              className="relative flex min-h-[400px] flex-col px-5 pt-10 pb-8 sm:min-h-[420px] sm:px-8 sm:pt-12 sm:pb-10 lg:h-[532px] lg:w-[471px] lg:px-12 lg:pb-10 lg:pt-12"
               style={{
                 backgroundColor: cardBackgroundColor ?? '#ffffff',
-                boxShadow: cardShadow ?? '0 30px 60px -30px rgba(0,0,0,0.35)',
+                boxShadow: cardShadow ?? '0 20px 50px -20px rgba(0,0,0,0.25)',
               }}
             >
               {/* Avatar circular dentro de la tarjeta */}
-              <div className="mb-6 flex shrink-0 justify-center lg:mb-8">
-                <div className="size-16 overflow-hidden rounded-full bg-white shadow-md sm:size-20 lg:size-[83px]">
+              <div className="mb-5 flex shrink-0 justify-center sm:mb-6 lg:mb-8">
+                <div className="size-[72px] overflow-hidden rounded-full bg-white shadow-md sm:size-20 lg:size-[83px]">
                   {avatarUrl ? (
                     <Image
                       src={avatarUrl}
@@ -250,11 +252,11 @@ export const TestimonialsBlock: React.FC<TestimonialsProps> = ({
                     onClick={goPrev}
                     aria-label="Testimonio anterior"
                     className={cn(
-                      'absolute top-1/2 left-2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-sm transition-opacity hover:opacity-100 lg:left-4 lg:size-14',
-                      'opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
+                      'absolute top-[calc(50%-1rem)] left-0 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-none transition-opacity hover:opacity-100 lg:top-1/2 lg:left-4 lg:size-14',
+                      'focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
                     )}
                     style={{
-                      backgroundColor: arrowBackgroundColor ?? 'transparent',
+                      backgroundColor: arrowBackgroundColor ?? 'rgba(235,235,235,0.85)',
                       color: arrowColor ?? '#0a0a0a',
                     }}
                   >
@@ -266,11 +268,11 @@ export const TestimonialsBlock: React.FC<TestimonialsProps> = ({
                     onClick={goNext}
                     aria-label="Siguiente testimonio"
                     className={cn(
-                      'absolute top-1/2 right-2 z-10 flex size-10 -translate-y-1/2 items-center justify-center rounded-sm transition-opacity hover:opacity-100 lg:right-4 lg:size-14',
-                      'opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
+                      'absolute top-[calc(50%-1rem)] right-0 z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-none transition-opacity hover:opacity-100 lg:top-1/2 lg:right-4 lg:size-14',
+                      'focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
                     )}
                     style={{
-                      backgroundColor: arrowBackgroundColor ?? 'transparent',
+                      backgroundColor: arrowBackgroundColor ?? 'rgba(235,235,235,0.85)',
                       color: arrowColor ?? '#0a0a0a',
                     }}
                   >
@@ -280,10 +282,10 @@ export const TestimonialsBlock: React.FC<TestimonialsProps> = ({
               ) : null}
 
               {/* Contenido central */}
-              <div className="flex min-h-0 flex-1 flex-col justify-center px-8 lg:px-10">
+              <div className="flex min-h-0 flex-1 flex-col justify-center px-7 sm:px-10 lg:px-10">
                 {/* Cita */}
                 <div
-                  className="testimonials-quote text-center text-sm leading-relaxed sm:text-base"
+                  className="testimonials-quote text-center text-sm leading-relaxed sm:text-[15px]"
                   style={{
                     color: quoteColor ?? '#475569',
                     fontFamily: quoteFont,
@@ -295,7 +297,7 @@ export const TestimonialsBlock: React.FC<TestimonialsProps> = ({
                 {/* Atribución opcional */}
                 {current.attribution ? (
                   <div
-                    className="testimonials-attribution mt-4 text-center text-xs sm:text-sm"
+                    className="testimonials-attribution mt-3 text-center text-xs sm:mt-4 sm:text-sm"
                     style={{
                       color: attributionColor ?? '#64748b',
                       fontFamily: attributionFont,
@@ -311,7 +313,7 @@ export const TestimonialsBlock: React.FC<TestimonialsProps> = ({
 
                 {/* Nombre */}
                 <div
-                  className="testimonials-name mt-6 text-center text-base font-semibold sm:text-lg"
+                  className="testimonials-name mt-5 text-center text-base font-semibold sm:mt-6 sm:text-lg"
                   style={{
                     color: nameColor ?? '#0a0a0a',
                     fontFamily: nameFont,
@@ -334,9 +336,9 @@ export const TestimonialsBlock: React.FC<TestimonialsProps> = ({
                 ) : null}
               </div>
 
-              {/* Puntos de paginación */}
+              {/* Indicadores de paginación (líneas horizontales) */}
               {testimonials.length > 1 ? (
-                <div className="mt-auto flex shrink-0 items-center justify-center gap-2 pt-6">
+                <div className="mt-auto flex shrink-0 items-center justify-center gap-3 pt-5 sm:pt-6">
                   {testimonials.map((_, idx) => (
                     <button
                       type="button"
@@ -345,13 +347,13 @@ export const TestimonialsBlock: React.FC<TestimonialsProps> = ({
                       aria-selected={idx === active}
                       onClick={() => goTo(idx)}
                       className={cn(
-                        'h-1.5 rounded-full transition-all duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
-                        idx === active ? 'w-6' : 'w-1.5 opacity-70 hover:opacity-100',
+                        'h-0.5 rounded-none transition-all duration-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40',
+                        idx === active ? 'w-8' : 'w-8 opacity-40 hover:opacity-70',
                       )}
                       style={{
                         backgroundColor:
                           idx === active
-                            ? dotActiveColor ?? '#0a0a0a'
+                            ? dotActiveColor ?? '#94a3b8'
                             : dotColor ?? '#cbd5e1',
                       }}
                     />
