@@ -512,6 +512,7 @@ export interface Page {
     | LocationBlock
     | ServiciosSoriaBlock
     | FAQsBlock
+    | TestimonialsBlock
   )[];
   meta?: {
     title?: string | null;
@@ -2060,6 +2061,257 @@ export interface FAQsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  /**
+   * ID opcional para enlaces ancla (ej: testimonios).
+   */
+  anchorId?: string | null;
+  /**
+   * Imagen que ocupa el panel izquierdo del bloque. Idealmente paisaje, mínimo 1600px de ancho.
+   */
+  backgroundImage: number | Media;
+  /**
+   * Cada elemento es un testimonio que el usuario puede navegar con las flechas o los puntos.
+   */
+  items?:
+    | {
+        /**
+         * Foto circular que aparece sobre la cita. Cuadrada, mínimo 200×200.
+         */
+        avatar?: (number | null) | Media;
+        /**
+         * Texto principal del testimonio.
+         */
+        quote: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        /**
+         * Línea pequeña bajo la cita (ej: "Images from Freepik"). Acepta enlaces.
+         */
+        attribution?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        name: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        role?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Si está marcado, los testimonios cambian uno a uno automáticamente.
+   */
+  autoplay?: boolean | null;
+  /**
+   * Solo aplica si "Avance automático" está activo.
+   */
+  autoplayMs?: number | null;
+  /**
+   * Color base detrás de la imagen. Por defecto: blanco.
+   */
+  backgroundColor?: string | null;
+  /**
+   * Color sólido del panel a la derecha de la imagen (como el azul oscuro del diseño). Por defecto: #143b5b.
+   */
+  accentColor?: string | null;
+  /**
+   * Por defecto: 100% (ancho completo, sin márgenes laterales). Ej: 72rem, 1200px.
+   */
+  maxWidth?: string | null;
+  /**
+   * Por defecto: 460px. Ej: 520px, 60vh.
+   */
+  minHeight?: string | null;
+  /**
+   * Por defecto: blanco.
+   */
+  cardBackgroundColor?: string | null;
+  /**
+   * Cualquier valor CSS de box-shadow. Por defecto: 0 30px 60px -30px rgba(0,0,0,0.35).
+   */
+  cardShadow?: string | null;
+  /**
+   * Por defecto: gris oscuro.
+   */
+  quoteColor?: string | null;
+  /**
+   * Por defecto usa la misma tipografía que el hero MicroVisuals (Instrument Serif + Barlow).
+   */
+  quoteFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Por defecto: gris medio.
+   */
+  attributionColor?: string | null;
+  /**
+   * Por defecto usa la misma tipografía que el hero MicroVisuals (Instrument Serif + Barlow).
+   */
+  attributionFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Por defecto: negro.
+   */
+  nameColor?: string | null;
+  /**
+   * Por defecto usa la misma tipografía que el hero MicroVisuals (Instrument Serif + Barlow).
+   */
+  nameFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Por defecto: gris medio.
+   */
+  roleColor?: string | null;
+  /**
+   * Por defecto usa la misma tipografía que el hero MicroVisuals (Instrument Serif + Barlow).
+   */
+  roleFontFamily?:
+    | (
+        | 'default'
+        | '"Instrument Serif", serif'
+        | 'Arial, sans-serif'
+        | '"Times New Roman", serif'
+        | 'Georgia, serif'
+        | 'Verdana, sans-serif'
+        | 'Helvetica, Arial, sans-serif'
+        | '"Courier New", monospace'
+        | '"Roboto", sans-serif'
+        | '"Open Sans", sans-serif'
+        | '"Lato", sans-serif'
+        | '"Montserrat", sans-serif'
+        | '"Playfair Display", serif'
+        | '"Inter", sans-serif'
+        | '"Poppins", sans-serif'
+        | '"Raleway", sans-serif'
+      )
+    | null;
+  /**
+   * Por defecto: gris oscuro.
+   */
+  arrowColor?: string | null;
+  /**
+   * Por defecto: transparente.
+   */
+  arrowBackgroundColor?: string | null;
+  /**
+   * Por defecto: gris claro.
+   */
+  dotColor?: string | null;
+  /**
+   * Por defecto: negro.
+   */
+  dotActiveColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "reservations".
  */
 export interface Reservation {
@@ -2497,6 +2749,7 @@ export interface PagesSelect<T extends boolean = true> {
         locationBlock?: T | LocationBlockSelect<T>;
         serviciosSoria?: T | ServiciosSoriaBlockSelect<T>;
         faqs?: T | FAQsBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
       };
   meta?:
     | T
@@ -2833,6 +3086,46 @@ export interface FAQsBlockSelect<T extends boolean = true> {
   answerFontFamily?: T;
   iconBackgroundColor?: T;
   iconColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock_select".
+ */
+export interface TestimonialsBlockSelect<T extends boolean = true> {
+  anchorId?: T;
+  backgroundImage?: T;
+  items?:
+    | T
+    | {
+        avatar?: T;
+        quote?: T;
+        attribution?: T;
+        name?: T;
+        role?: T;
+        id?: T;
+      };
+  autoplay?: T;
+  autoplayMs?: T;
+  backgroundColor?: T;
+  accentColor?: T;
+  maxWidth?: T;
+  minHeight?: T;
+  cardBackgroundColor?: T;
+  cardShadow?: T;
+  quoteColor?: T;
+  quoteFontFamily?: T;
+  attributionColor?: T;
+  attributionFontFamily?: T;
+  nameColor?: T;
+  nameFontFamily?: T;
+  roleColor?: T;
+  roleFontFamily?: T;
+  arrowColor?: T;
+  arrowBackgroundColor?: T;
+  dotColor?: T;
+  dotActiveColor?: T;
   id?: T;
   blockName?: T;
 }

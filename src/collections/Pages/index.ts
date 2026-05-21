@@ -13,6 +13,7 @@ import { LocationBlock } from '../../blocks/LocationBlock/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { ProductsBlock } from '../../blocks/ProductsBlock/config'
 import { ServiciosSoriaBlock } from '../../blocks/ServiciosSoria/config'
+import { TestimonialsBlock } from '../../blocks/Testimonials/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -90,6 +91,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 LocationBlock,
                 ServiciosSoriaBlock,
                 FAQsBlock,
+                TestimonialsBlock,
               ],
               required: true,
               admin: {

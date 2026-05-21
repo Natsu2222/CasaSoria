@@ -13,6 +13,7 @@ import { LocationBlock } from '@/blocks/LocationBlock/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { ProductsBlock } from '@/blocks/ProductsBlock/Component'
 import { ServiciosSoriaBlock } from '@/blocks/ServiciosSoria/Component'
+import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -26,6 +27,7 @@ const blockComponents = {
   mediaBlock: MediaBlock,
   productsBlock: ProductsBlock,
   serviciosSoria: ServiciosSoriaBlock,
+  testimonials: TestimonialsBlock,
 }
 
 export const RenderBlocks: React.FC<{
