@@ -5,6 +5,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
 
+import { formatPageTitle } from '@/constants/site'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
@@ -113,7 +114,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   }
 
   return {
-    title: `${product.title} | Casa Soria`,
+    title: formatPageTitle(product.title),
     description: product.shortDescription || undefined,
   }
 }

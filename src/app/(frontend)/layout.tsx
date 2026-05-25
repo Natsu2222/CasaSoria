@@ -24,6 +24,7 @@ import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
+import { SITE_DESCRIPTION, SITE_NAME } from '@/constants/site'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 import './globals.css'
@@ -59,6 +60,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
