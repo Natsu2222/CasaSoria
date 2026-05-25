@@ -7,14 +7,7 @@ import { resolveFontFamily } from '@/fields/fontFamilySelect'
 // Payload has had a chance to regenerate types. After your next `pnpm dev`
 // run there will be a generated `LocationBlock` interface — you can swap to
 // it if you prefer a single source of truth.
-type DayOfWeek =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday'
+type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
 
 type OpeningHour = {
   daysOfWeek?: DayOfWeek[] | null
@@ -119,7 +112,9 @@ export const LocationBlock: React.FC<LocationBlockProps> = (props) => {
 
   return (
     <section
-      className={hasBackground ? 'location-block w-full py-16 md:py-24' : 'location-block container'}
+      className={
+        hasBackground ? 'location-block w-full py-16 md:py-24' : 'location-block container'
+      }
       style={sectionStyle}
       aria-labelledby="location-heading"
     >
@@ -144,7 +139,7 @@ export const LocationBlock: React.FC<LocationBlockProps> = (props) => {
 
           <address className="location-block-body not-italic space-y-4 text-base">
             <div>
-              <div className="font-medium mb-1">Address</div>
+              <div className="font-medium mb-1">Dirección</div>
               <div>{address?.streetAddress}</div>
               <div>
                 {[address?.postalCode, address?.addressLocality].filter(Boolean).join(' ')}
@@ -155,7 +150,7 @@ export const LocationBlock: React.FC<LocationBlockProps> = (props) => {
             <div className="flex flex-col sm:flex-row sm:gap-8 gap-4">
               {phone ? (
                 <div>
-                  <div className="font-medium mb-1">Phone</div>
+                  <div className="font-medium mb-1">Teléfono</div>
                   <a className="hover:underline" href={`tel:${phone.replace(/\s+/g, '')}`}>
                     {phone}
                   </a>
@@ -174,13 +169,13 @@ export const LocationBlock: React.FC<LocationBlockProps> = (props) => {
 
             {Array.isArray(openingHours) && openingHours.length > 0 ? (
               <div>
-                <div className="font-medium mb-1">Opening hours</div>
+                <div className="font-medium mb-1">Abierto</div>
                 <ul className="space-y-1">
                   {openingHours.map((entry, i) => (
                     <li key={i} className="text-sm">
                       <span className="font-medium">{formatDays(entry.daysOfWeek)}: </span>
                       {entry.closed ? (
-                        <span className="text-muted-foreground">Closed</span>
+                        <span className="text-muted-foreground">Cerrado</span>
                       ) : (
                         <span>
                           {entry.opens ?? '—'} – {entry.closes ?? '—'}
@@ -250,16 +245,7 @@ type JsonLdArgs = Pick<
 >
 
 function buildLocalBusinessJsonLd(args: JsonLdArgs) {
-  const {
-    businessName,
-    description,
-    address,
-    phone,
-    email,
-    geo,
-    openingHours,
-    priceRange,
-  } = args
+  const { businessName, description, address, phone, email, geo, openingHours, priceRange } = args
 
   const ld: Record<string, unknown> = {
     '@context': 'https://schema.org',
@@ -279,11 +265,7 @@ function buildLocalBusinessJsonLd(args: JsonLdArgs) {
     ...(priceRange ? { priceRange } : {}),
   }
 
-  if (
-    geo &&
-    typeof geo.latitude === 'number' &&
-    typeof geo.longitude === 'number'
-  ) {
+  if (geo && typeof geo.latitude === 'number' && typeof geo.longitude === 'number') {
     ld.geo = {
       '@type': 'GeoCoordinates',
       latitude: geo.latitude,

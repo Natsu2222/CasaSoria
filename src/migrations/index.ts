@@ -7,6 +7,7 @@ import * as migration_20260519_115103_navbar_soria from './20260519_115103_navba
 import * as migration_20260519_141612 from './20260519_141612';
 import * as migration_20260520_094104_faqs_block from './20260520_094104_faqs_block';
 import * as migration_20260521_085253_testimonials_block from './20260521_085253_testimonials_block';
+import * as migration_20260525_103734_footer_soria from './20260525_103734_footer_soria';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20260521_085253_testimonials_block.up,
     down: migration_20260521_085253_testimonials_block.down,
-    name: '20260521_085253_testimonials_block'
+    name: '20260521_085253_testimonials_block',
+  },
+  {
+    up: migration_20260525_103734_footer_soria.up,
+    down: migration_20260525_103734_footer_soria.down,
+    name: '20260525_103734_footer_soria'
   },
 ];

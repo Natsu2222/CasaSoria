@@ -71,10 +71,10 @@ export function ReserveForm({ productID, productTitle, disabled }: Props) {
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <div className="font-medium">Reserve this product</div>
+          <div className="font-medium">Reservar este producto</div>
           <div className="text-sm text-muted-foreground mt-1">
-            We’ll hold <span className="font-medium text-foreground">{productTitle}</span> for pickup and payment in
-            store.
+            Guardaremos <span className="font-medium text-foreground">{productTitle}</span> para
+            recoger y pagar en la tienda.
           </div>
         </div>
       </div>
@@ -98,12 +98,28 @@ export function ReserveForm({ productID, productTitle, disabled }: Props) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
-        <Field label="Full name" name="fullName" required disabled={disabled || status === 'submitting'} />
-        <Field label="Mobile" name="mobile" required disabled={disabled || status === 'submitting'} />
-        <Field label="Email" name="email" required type="email" disabled={disabled || status === 'submitting'} />
+        <Field
+          label="Nombre completo"
+          name="fullName"
+          required
+          disabled={disabled || status === 'submitting'}
+        />
+        <Field
+          label="Teléfono"
+          name="mobile"
+          required
+          disabled={disabled || status === 'submitting'}
+        />
+        <Field
+          label="Email"
+          name="email"
+          required
+          type="email"
+          disabled={disabled || status === 'submitting'}
+        />
         <div className="sm:col-span-2">
           <label className="block text-sm font-medium mb-1" htmlFor={`${formId}-message`}>
-            Message (optional)
+            Mensaje (opcional)
           </label>
           <textarea
             id={`${formId}-message`}
@@ -112,7 +128,7 @@ export function ReserveForm({ productID, productTitle, disabled }: Props) {
             maxLength={1000}
             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
             disabled={disabled || status === 'submitting'}
-            placeholder="Anything we should know?"
+            placeholder="Cualquier información que queramos saber"
           />
         </div>
       </div>
@@ -127,11 +143,14 @@ export function ReserveForm({ productID, productTitle, disabled }: Props) {
         </button>
 
         {status === 'success' ? (
-          <div className="text-sm text-green-600 dark:text-green-400">Reservation received. Thank you!</div>
+          <div className="text-sm text-green-600 dark:text-green-400">
+            Reservación recibida. ¡Gracias!
+          </div>
         ) : null}
         {status === 'error' ? (
           <div className="text-sm text-red-600 dark:text-red-400">
-            Could not submit. {errorMessage ? <span className="break-all">{errorMessage}</span> : null}
+            Could not submit.{' '}
+            {errorMessage ? <span className="break-all">{errorMessage}</span> : null}
           </div>
         ) : null}
       </div>
@@ -169,4 +188,3 @@ function Field({
     </div>
   )
 }
-

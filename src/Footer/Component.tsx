@@ -5,9 +5,14 @@ import React from 'react'
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
+import { FooterSoria } from './FooterSoria'
 
 export async function Footer() {
-  const footerData = await getCachedGlobal('footer', 1)()
+  const footerData = await getCachedGlobal('footer', 2)()
+
+  if (footerData?.type === 'footerSoria') {
+    return <FooterSoria data={footerData} />
+  }
 
   const navItems = footerData?.navItems || []
 

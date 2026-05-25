@@ -3714,6 +3714,10 @@ export interface Header {
  */
 export interface Footer {
   id: number;
+  /**
+   * Elige qué footer quieres usar en la web. Al cambiar de tipo, los campos específicos se mostrarán u ocultarán automáticamente.
+   */
+  type: 'default' | 'footerSoria';
   navItems?:
     | {
         link: {
@@ -3734,6 +3738,177 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Footer minimalista con enlaces sociales, logotipo y barra legal inferior. Todos los textos son rich text para poder aplicar negrita, cursiva y subrayado.
+   */
+  footerSoria?: {
+    /**
+     * Lista vertical con icono + texto. Se muestran separados por líneas finas, como en la referencia de diseño.
+     */
+    socialLinks?:
+      | {
+          icon?: ('whatsapp' | 'instagram' | 'linkedin' | 'facebook' | 'mail' | 'phone' | 'external') | null;
+          label: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          };
+          link?: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'posts';
+                  value: number | Post;
+                } | null);
+            url?: string | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Imagen del logotipo o isotipo. Se muestra junto al texto de marca.
+     */
+    logo?: (number | null) | Media;
+    /**
+     * Texto junto al logotipo. Usa negrita en una palabra y regular en otra, p. ej. "Senda" + "Health".
+     */
+    brandText?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Por defecto enlaza a la página de inicio. Déjalo vacío para usar "/".
+     */
+    brandLink: {
+      link: {
+        type?: ('reference' | 'custom') | null;
+        newTab?: boolean | null;
+        reference?:
+          | ({
+              relationTo: 'pages';
+              value: number | Page;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        url?: string | null;
+        label: string;
+      };
+    };
+    /**
+     * Enlaces del pie inferior (Aviso legal, Privacidad, Cookies…).
+     */
+    legalLinks?:
+      | {
+          label: {
+            root: {
+              type: string;
+              children: {
+                type: any;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          };
+          link?: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'posts';
+                  value: number | Post;
+                } | null);
+            url?: string | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Texto de derechos de autor en la esquina inferior derecha.
+     */
+    copyright?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Opcional. Cualquier color CSS (#hex, rgb, oklch…).
+     */
+    backgroundColor?: string | null;
+    /**
+     * Aplica a textos, iconos y enlaces.
+     */
+    textColor?: string | null;
+    /**
+     * Tipografía base del footer. Por defecto usa la del sitio.
+     */
+    fontFamily?:
+      | (
+          | 'default'
+          | '"Instrument Serif", serif'
+          | 'Arial, sans-serif'
+          | '"Times New Roman", serif'
+          | 'Georgia, serif'
+          | 'Verdana, sans-serif'
+          | 'Helvetica, Arial, sans-serif'
+          | '"Courier New", monospace'
+          | '"Roboto", sans-serif'
+          | '"Open Sans", sans-serif'
+          | '"Lato", sans-serif'
+          | '"Montserrat", sans-serif'
+          | '"Playfair Display", serif'
+          | '"Inter", sans-serif'
+          | '"Poppins", sans-serif'
+          | '"Raleway", sans-serif'
+        )
+      | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3803,6 +3978,7 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  type?: T;
   navItems?:
     | T
     | {
@@ -3816,6 +3992,58 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  footerSoria?:
+    | T
+    | {
+        socialLinks?:
+          | T
+          | {
+              icon?: T;
+              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                  };
+              id?: T;
+            };
+        logo?: T;
+        brandText?: T;
+        brandLink?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+            };
+        legalLinks?:
+          | T
+          | {
+              label?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                  };
+              id?: T;
+            };
+        copyright?: T;
+        backgroundColor?: T;
+        textColor?: T;
+        fontFamily?: T;
       };
   updatedAt?: T;
   createdAt?: T;
