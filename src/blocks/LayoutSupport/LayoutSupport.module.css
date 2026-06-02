@@ -1,0 +1,96 @@
+.section {
+  container-type: inline-size;
+  --anim-image-duration: 3s;
+  --anim-image-delay: 0.4s;
+  /* Grosor del “hilo” central (efecto TV): mitad visible = 2px → línea de 4px */
+  --tv-line-half: 2px;
+  --anim-text-duration: 2.8s;
+  --anim-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Contenedor exterior: deja visible el box-shadow del pulso */
+.imgOuter {
+  position: relative;
+  overflow: visible;
+}
+
+.imgOuterPulse {
+  animation: layout-support-pulse 7s ease-in-out infinite;
+}
+
+/* Imagen: línea central (efecto TV) → se abre hacia arriba y abajo */
+.imgWrap {
+  overflow: hidden;
+  clip-path: inset(calc(50% - var(--tv-line-half)) 0 calc(50% - var(--tv-line-half)) 0);
+  transition: clip-path var(--anim-image-duration) var(--anim-ease);
+  transition-delay: 0s;
+  will-change: clip-path;
+}
+
+.imgWrapInView {
+  animation: layout-support-tv-open var(--anim-image-duration) var(--anim-ease) var(--anim-image-delay) forwards;
+  transition: none;
+}
+
+@keyframes layout-support-tv-open {
+  from {
+    clip-path: inset(calc(50% - var(--tv-line-half)) 0 calc(50% - var(--tv-line-half)) 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+@keyframes layout-support-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulse-color, #ffc950) 55%, transparent);
+  }
+
+  45% {
+    box-shadow: 0 0 0 18px color-mix(in srgb, var(--pulse-color, #ffc950) 28%, transparent);
+  }
+
+  100% {
+    box-shadow: 0 0 0 28px color-mix(in srgb, var(--pulse-color, #ffc950) 0%, transparent);
+  }
+}
+
+/* Texto: entra/sale por el lateral opuesto a la imagen */
+.textBlock {
+  opacity: 0;
+  transform: translateX(var(--slide-offset));
+  transition:
+    opacity var(--anim-text-duration) var(--anim-ease),
+    transform var(--anim-text-duration) var(--anim-ease);
+  transition-delay: 0s;
+  will-change: opacity, transform;
+}
+
+.textBlockInView {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: 0.55s;
+}
+
+.textBlockStatic {
+  opacity: 1;
+  transform: none;
+}
+
+.slideFromLeft {
+  /* Recorrido desde el borde izquierdo del bloque (ancho completo de la sección) */
+  --slide-offset: -100cqw;
+}
+
+.slideFromRight {
+  /* Recorrido desde el borde derecho del bloque (ancho completo de la sección) */
+  --slide-offset: 100cqw;
+}

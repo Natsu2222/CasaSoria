@@ -9,8 +9,19 @@ import {
 
 import { linkGroup } from '@/fields/linkGroup'
 
+import { heroParallaxGroupField } from '@/heros/heroParallaxFields'
+import { heroParallax2GroupField } from '@/heros/heroParallax2Fields'
+import { heroParallax3GroupField } from '@/heros/heroParallax3Fields'
 import { microVisualsGroupField } from '@/heros/microVisualsFields'
 import { heroSoriaGroupField } from '@/heros/heroSoriaFields'
+
+const customHeroTypes = [
+  'microVisuals',
+  'heroSoria',
+  'heroParallax',
+  'heroParallax2',
+  'heroParallax3',
+] as const
 
 export const hero: Field = {
   name: 'hero',
@@ -46,6 +57,18 @@ export const hero: Field = {
           label: 'Hero Soria (polaroids)',
           value: 'heroSoria',
         },
+        {
+          label: 'Hero Parallax',
+          value: 'heroParallax',
+        },
+        {
+          label: 'Hero Parallax 2',
+          value: 'heroParallax2',
+        },
+        {
+          label: 'Hero Parallax 3 (fondo imagen)',
+          value: 'heroParallax3',
+        },
       ],
       required: true,
     },
@@ -54,7 +77,7 @@ export const hero: Field = {
       type: 'richText',
       admin: {
         // Hide the legacy richText for hero types that bring their own copy fields.
-        condition: (_, { type } = {}) => !['microVisuals', 'heroSoria'].includes(type),
+        condition: (_, { type } = {}) => !customHeroTypes.includes(type),
       },
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
@@ -72,7 +95,7 @@ export const hero: Field = {
       overrides: {
         maxRows: 2,
         admin: {
-          condition: (_, { type } = {}) => !['microVisuals', 'heroSoria'].includes(type),
+          condition: (_, { type } = {}) => !customHeroTypes.includes(type),
         },
       },
     }),
@@ -93,6 +116,9 @@ export const hero: Field = {
     },
     microVisualsGroupField,
     heroSoriaGroupField,
+    heroParallaxGroupField,
+    heroParallax2GroupField,
+    heroParallax3GroupField,
   ],
   label: false,
 }

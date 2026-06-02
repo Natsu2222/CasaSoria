@@ -1,0 +1,45 @@
+.section {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.bgClip {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bgLayer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  max-width: none;
+  transform: translateX(-50%);
+  will-change: transform;
+}
+
+.bgLayerParallax {
+  top: min(-40vh, -35%);
+  bottom: min(-40vh, -35%);
+}
+
+.bgImage {
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+}

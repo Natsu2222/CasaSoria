@@ -3,15 +3,21 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
+import { CasosExitoBlock } from '../../blocks/CasosExito/config'
+import { CasosExitoGridsBlock } from '../../blocks/CasosExitoGrids/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
+import { CTAClientesBlock } from '../../blocks/CTAClientes/config'
+import { CtaParallaxBlock } from '../../blocks/CTAParallax/config'
 import { Content } from '../../blocks/Content/config'
 import { FAQsBlock } from '../../blocks/FAQs/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { LayoutSoriaBlock } from '../../blocks/LayoutSoria/config'
 import { LayoutSoria2Block } from '../../blocks/LayoutSoria2/config'
+import { LayoutSupportBlock } from '../../blocks/LayoutSupport/config'
 import { LocationBlock } from '../../blocks/LocationBlock/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { ProductsBlock } from '../../blocks/ProductsBlock/config'
+import { ServiciosGridBlock } from '../../blocks/ServiciosGrid/config'
 import { ServiciosSoriaBlock } from '../../blocks/ServiciosSoria/config'
 import { TestimonialsBlock } from '../../blocks/Testimonials/config'
 import { hero } from '@/heros/config'
@@ -88,8 +94,14 @@ export const Pages: CollectionConfig<'pages'> = {
                 ProductsBlock,
                 LayoutSoriaBlock,
                 LayoutSoria2Block,
+                LayoutSupportBlock,
                 LocationBlock,
                 ServiciosSoriaBlock,
+                ServiciosGridBlock,
+                CasosExitoBlock,
+                CasosExitoGridsBlock,
+                CtaParallaxBlock,
+                CTAClientesBlock,
                 FAQsBlock,
                 TestimonialsBlock,
               ],

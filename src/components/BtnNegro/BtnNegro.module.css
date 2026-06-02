@@ -1,0 +1,57 @@
+.root {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  overflow: hidden;
+  padding: 27px 44px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  line-height: 1;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--btn-text, #f3f3f3);
+  cursor: pointer;
+  border: 0;
+  border-radius: 0;
+  user-select: none;
+  transition: color 0.4s linear;
+}
+
+.root:hover {
+  color: var(--btn-text-hover, #1e1e1c);
+}
+
+.root:focus-visible {
+  outline: 2px solid var(--btn-text-hover, #1e1e1c);
+  outline-offset: 2px;
+}
+
+.base {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--btn-base, #1e1e1c);
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 101%;
+  height: 101%;
+  background: var(--btn-fill, #f3f3f3);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.5, 1.6, 0.4, 0.7);
+  will-change: transform;
+}
+
+.root:hover .fill {
+  transform: scaleX(1);
+}
+
+.label {
+  position: relative;
+  z-index: 2;
+}

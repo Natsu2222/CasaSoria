@@ -163,7 +163,16 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'microVisuals' | 'heroSoria';
+    type:
+      | 'none'
+      | 'highImpact'
+      | 'mediumImpact'
+      | 'lowImpact'
+      | 'microVisuals'
+      | 'heroSoria'
+      | 'heroParallax'
+      | 'heroParallax2'
+      | 'heroParallax3';
     richText?: {
       root: {
         type: string;
@@ -499,6 +508,176 @@ export interface Page {
        */
       backgroundColor?: string | null;
     };
+    heroParallax?: {
+      title: string;
+      subtitle?: string | null;
+      cta?: {
+        label?: string | null;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+      };
+      /**
+       * Añade entre 1 y 5 capas. El orden importa: la primera capa queda detrás, la última delante.
+       */
+      layers?:
+        | {
+            image: number | Media;
+            /**
+             * Describe la imagen para accesibilidad y SEO.
+             */
+            alt?: string | null;
+            /**
+             * 0 = estática (sin movimiento) · 0.3 = lenta · 0.6 = media · 1 = rápida. Las capas de fondo suelen ir más lentas.
+             */
+            speed?: number | null;
+            objectFit?: ('cover' | 'contain' | 'fill') | null;
+            /**
+             * Útil para superponer capas semitransparentes y crear profundidad.
+             */
+            opacity?: number | null;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * Capa oscura sobre las imágenes para mejorar la legibilidad del texto. 0 = sin overlay.
+       */
+      overlayOpacity?: number | null;
+      height?: ('screen' | 'large' | 'medium') | null;
+      textAlign?: ('center' | 'left' | 'right') | null;
+    };
+    heroParallax2?: {
+      title: string;
+      subtitle?: string | null;
+      cta?: {
+        label?: string | null;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+      };
+      /**
+       * Color hex o CSS. Ej: #FFC950, white, rgb(255,201,80)
+       */
+      leftBgColor?: string | null;
+      /**
+       * Color hex o CSS para el título y subtítulo.
+       */
+      textColor?: string | null;
+      /**
+       * Imagen que cubre todo el hero detrás de las capas parallax. En Minery es una textura/foto de fondo.
+       */
+      backgroundImage?: (number | null) | Media;
+      /**
+       * Imágenes que se mueven con el ratón. El orden importa: index 0 = fondo, el último = frente. En Minery: cielo (valor 5) · montañas (valor 5) · persona (valor 10).
+       */
+      layers?:
+        | {
+            image: number | Media;
+            alt?: string | null;
+            /**
+             * Cuanto mayor el número, más se desplaza esta capa al mover el ratón. Capas de fondo → valores bajos (3-6). Capas de frente → valores altos (8-15).
+             */
+            moveValue?: number | null;
+            opacity?: number | null;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * En mobile no hay parallax. Esta imagen cubre todo el hero como fondo estático. Diseña una imagen pre-compuesta (texto no, solo la parte visual). En Minery: MR-web-SLIDER-MOVIL.png — combina cielo + montañas + persona en una sola imagen.
+       */
+      mobileImage?: (number | null) | Media;
+      mobileTextAlign?: ('center' | 'left') | null;
+      height?: ('500' | '600' | '700' | '100vh') | null;
+    };
+    heroParallax3?: {
+      title: {
+        root: {
+          type: string;
+          children: {
+            type: any;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      };
+      subtitle?: {
+        root: {
+          type: string;
+          children: {
+            type: any;
+            version: number;
+            [k: string]: unknown;
+          }[];
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+          indent: number;
+          version: number;
+        };
+        [k: string]: unknown;
+      } | null;
+      cta?: {
+        label?: string | null;
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        /**
+         * Fondo en reposo, antes del barrido.
+         */
+        baseColor?: string | null;
+        /**
+         * Color que barre el botón al pasar el ratón.
+         */
+        fillColor?: string | null;
+        textColor?: string | null;
+        /**
+         * Texto cuando el barrido ha cubierto el botón.
+         */
+        hoverTextColor?: string | null;
+      };
+      /**
+       * Imagen que cubre la zona de texto. Sustituye el color de fondo de Hero Parallax 2.
+       */
+      leftBackgroundImage?: (number | null) | Media;
+      /**
+       * Color hex o CSS para el título y subtítulo.
+       */
+      textColor?: string | null;
+      /**
+       * Imagen que cubre todo el hero detrás de las capas parallax. Se mueve con efecto parallax en desktop.
+       */
+      backgroundImage?: (number | null) | Media;
+      /**
+       * Intensidad del movimiento al mover el ratón. Valores bajos (2–4) suelen funcionar bien para el fondo.
+       */
+      backgroundMoveValue?: number | null;
+      /**
+       * Imágenes que se mueven con el ratón. El orden importa: index 0 = fondo, el último = frente. En Minery: cielo (valor 5) · montañas (valor 5) · persona (valor 10).
+       */
+      layers?:
+        | {
+            image: number | Media;
+            alt?: string | null;
+            /**
+             * Cuanto mayor el número, más se desplaza esta capa al mover el ratón. Capas de fondo → valores bajos (3-6). Capas de frente → valores altos (8-15).
+             */
+            moveValue?: number | null;
+            opacity?: number | null;
+            id?: string | null;
+          }[]
+        | null;
+      /**
+       * En mobile no hay parallax. Esta imagen cubre todo el hero como fondo estático. Diseña una imagen pre-compuesta (texto no, solo la parte visual). En Minery: MR-web-SLIDER-MOVIL.png — combina cielo + montañas + persona en una sola imagen.
+       */
+      mobileImage?: (number | null) | Media;
+      mobileTextAlign?: ('center' | 'left') | null;
+      /**
+       * Color hex o CSS del bloque de texto en mobile (< 768px).
+       */
+      mobileBackgroundColor?: string | null;
+      height?: ('500' | '600' | '700' | '100vh') | null;
+    };
   };
   layout: (
     | CallToActionBlock
@@ -509,8 +688,14 @@ export interface Page {
     | ProductsBlock
     | LayoutSoriaBlock
     | LayoutSoria2Block
+    | LayoutSupportBlock
     | LocationBlock
     | ServiciosSoriaBlock
+    | ServicesGridBlock
+    | CasosExitoBlock
+    | CasosExitoGridsBlock
+    | CtaParallaxBlock
+    | CTAClientesBlock
     | FAQsBlock
     | TestimonialsBlock
   )[];
@@ -1478,6 +1663,154 @@ export interface LayoutSoria2Block {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LayoutSupportBlock".
+ */
+export interface LayoutSupportBlock {
+  imagePosition?: ('left' | 'right') | null;
+  /**
+   * Imagen cuadrada o vertical recomendada. Recibe una animación de pulso/respiración (box-shadow) en el color de acento elegido.
+   */
+  image: number | Media;
+  imageAlt?: string | null;
+  /**
+   * Ej: "¿PREOCUPADO POR TU EMPRESA?"
+   */
+  eyebrow?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Ej: "Estado de Madurez en Ciberseguridad"
+   */
+  heading: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Párrafo/s descriptivos. Soporta formato enriquecido.
+   */
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  cta?: {
+    label?: string | null;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+  };
+  eyebrowFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  headingFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  bodyFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  backgroundType?: ('image' | 'color') | null;
+  /**
+   * Se posiciona según "Posición del fondo". Cubre toda la sección (background-size: cover).
+   */
+  backgroundImage?: (number | null) | Media;
+  backgroundPosition?: ('center center' | 'right center' | 'left center' | 'center top' | 'center bottom') | null;
+  /**
+   * Color hex o CSS. Se usa cuando el tipo de fondo es "Color sólido".
+   */
+  backgroundColor?: string | null;
+  /**
+   * Capa semitransparente sobre la imagen de fondo. Ej: rgba(0,0,0,0.4) para oscurecer, rgba(255,255,255,0.1) para aclarar. Dejar vacío para sin overlay.
+   */
+  overlayColor?: string | null;
+  paddingY?: ('80' | '120' | '160' | '200') | null;
+  /**
+   * Color hex o CSS.
+   */
+  eyebrowColor?: string | null;
+  /**
+   * Color hex o CSS.
+   */
+  headingColor?: string | null;
+  /**
+   * Color hex o CSS. Por defecto #f3f3f3 (blanco-web) para contrastar con fondos oscuros/imagen.
+   */
+  bodyColor?: string | null;
+  /**
+   * Color del box-shadow pulsante alrededor de la imagen. Ej: #FFC950 (amarillo Minery), transparent para desactivar.
+   */
+  imagePulseColor?: string | null;
+  /**
+   * El texto aparece deslizándose desde el lado opuesto a la imagen al entrar en pantalla, y desaparece al salir. La animación se repite cada vez que la sección vuelve al viewport.
+   */
+  enableFadeIn?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'layoutSupport';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "LocationBlock".
  */
 export interface LocationBlock {
@@ -1831,6 +2164,582 @@ export interface ServiciosSoriaBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'serviciosSoria';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesGridBlock".
+ */
+export interface ServicesGridBlock {
+  /**
+   * Texto pequeño encima del título. Ej: "LO QUE BUSCAS"
+   */
+  eyebrow?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Ej: "Nuestros servicios destacados"
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  headerFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  /**
+   * Línea decorativa a la izquierda del eyebrow. El texto usa el color del título.
+   */
+  eyebrowColor?: string | null;
+  /**
+   * Color hex o CSS.
+   */
+  headingColor?: string | null;
+  /**
+   * Color de fondo del bloque completo. Acepta hex, rgb, oklch, etc.
+   */
+  backgroundColor?: string | null;
+  /**
+   * Cada tarjeta muestra: icono, título y descripción centrados. Al hacer hover se aplica el relleno de color y cambian los colores del texto.
+   */
+  services?:
+    | {
+        /**
+         * Imagen cuadrada ~80–100 px. Fondo transparente recomendado.
+         */
+        icon: number | Media;
+        /**
+         * Siempre visible (también en reposo). Ej: "Ciberseguridad para Empresas"
+         */
+        title?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Texto descriptivo bajo el título. Por defecto siempre visible.
+         */
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Si está activo, la descripción solo aparece al pasar el cursor sobre la tarjeta (en dispositivos táctiles sigue visible).
+         */
+        hideDescriptionUntilHover?: boolean | null;
+        /**
+         * Ej: /ciberseguridad/caas/
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Fuente aplicada al título y descripción de cada tarjeta.
+   */
+  cardFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  /**
+   * Color de fondo cuando la tarjeta NO está en hover.
+   */
+  cardBackground?: string | null;
+  /**
+   * Color del título (siempre visible). También es el color del icono si no tiene color propio.
+   */
+  textColorRest?: string | null;
+  /**
+   * Borde de 3px en la parte inferior de la tarjeta. En hover cambia de color según "Color del borde en hover".
+   */
+  accentColor?: string | null;
+  /**
+   * Color con el que se rellena la tarjeta al hacer hover. Ej: #FFC950 (amarillo Minery), #1e1e1c (negro), #ffffff (blanco).
+   */
+  hoverFillColor?: string | null;
+  /**
+   * Color del título Y la descripción cuando la tarjeta está en hover.
+   */
+  textColorHover?: string | null;
+  /**
+   * El borde inferior pasa de 3px a 9px y cambia a este color en hover.
+   */
+  accentColorHover?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CasosExitoBlock".
+ */
+export interface CasosExitoBlock {
+  /**
+   * Ej: "CASOS DE ÉXITO"
+   */
+  eyebrow?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Ej: "Nuestros hitos"
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Cada slide muestra: imagen a la izquierda + nombre de empresa y texto a la derecha. En mobile se apilan (imagen arriba, texto abajo).
+   */
+  slides?:
+    | {
+        /**
+         * Formato horizontal/panorámico. Ej: 800×500 px.
+         */
+        image: number | Media;
+        imageAlt?: string | null;
+        /**
+         * Ej: "ECIJA", "EJÉRCITO DEL AIRE"
+         */
+        company: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        /**
+         * Párrafo con el hito o logro conseguido.
+         */
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Fade es el más cercano al comportamiento del slider original.
+   */
+  effect?: ('fade' | 'slide') | null;
+  autoplay?: boolean | null;
+  /**
+   * 4500 ms (4.5 s) es el valor por defecto de Minery.
+   */
+  autoplayDelay?: number | null;
+  loop?: boolean | null;
+  /**
+   * Duración de la animación entre slides. 800ms ≈ Slick por defecto.
+   */
+  speed?: number | null;
+  pauseOnHover?: boolean | null;
+  imagePosition?: ('left' | 'right') | null;
+  imageSplit?: ('50/50' | '60/40' | '40/60') | null;
+  slideMinHeight?: number | null;
+  /**
+   * Color hex o CSS.
+   */
+  sectionBackground?: string | null;
+  /**
+   * Fondo del panel de texto derecho (o izquierdo) de cada slide. Ej: #f3f3f3, #1e1e1c, #FFC950.
+   */
+  slideBackground?: string | null;
+  headerFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  slideFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  eyebrowColor?: string | null;
+  headingColor?: string | null;
+  /**
+   * Color del nombre en cada slide.
+   */
+  companyColor?: string | null;
+  descriptionColor?: string | null;
+  /**
+   * Color activo del dot (punto de navegación). Los dots inactivos usarán el mismo color con opacidad reducida.
+   */
+  dotsColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'casosExito';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CasosExitoGridsBlock".
+ */
+export interface CasosExitoGridsBlock {
+  /**
+   * Ej: "CASOS DE ÉXITO"
+   */
+  eyebrow?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Ej: "Nuestros hitos"
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Grid 2 columnas en desktop. Cada caso: imagen arriba + nombre empresa + descripción. Los items impares (1ª, 3ª…) entran desde la izquierda al scroll; los pares (2ª, 4ª…) entran desde la derecha.
+   */
+  cases?:
+    | {
+        /**
+         * Formato landscape recomendado. Ocupa el ancho completo de la columna.
+         */
+        image: number | Media;
+        imageAlt?: string | null;
+        /**
+         * Se muestra en mayúsculas y negrita. Ej: "ECIJA", "EJÉRCITO DEL AIRE".
+         */
+        company: string;
+        /**
+         * Párrafo con el logro o hito conseguido con este cliente.
+         */
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        /**
+         * Si se rellena, el nombre de la empresa y/o la imagen serán un enlace.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Items de la columna izquierda entran desde la izquierda; items de la columna derecha entran desde la derecha.
+   */
+  enableAnimation?: boolean | null;
+  /**
+   * Cuántos píxeles se desplaza el item antes de entrar. 60px ≈ Minery.
+   */
+  animationDistance?: number | null;
+  animationDuration?: number | null;
+  headerFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  cardFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  sectionBackground?: string | null;
+  eyebrowColor?: string | null;
+  headingColor?: string | null;
+  companyColor?: string | null;
+  descriptionColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'casosExitoGrids';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaParallaxBlock".
+ */
+export interface CtaParallaxBlock {
+  /**
+   * Ej: "Un problema, una solución\nNosotros te asesoramos". Soporta saltos de línea y formato enriquecido.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  cta?: {
+    label?: string | null;
+    url?: string | null;
+    openInNewTab?: boolean | null;
+  };
+  /**
+   * Imagen grande recomendada (mín. 1920px de ancho). Se fija al viewport mientras el usuario hace scroll — efecto parallax CSS.
+   */
+  backgroundImage: number | Media;
+  backgroundPosition?: ('center center' | 'center top' | 'center bottom' | 'left center' | 'right center') | null;
+  /**
+   * Capa de color semitransparente encima del fondo. Ej: rgba(0,0,0,0.4) para oscurecer. Dejar vacío para sin overlay.
+   */
+  overlayColor?: string | null;
+  /**
+   * background-attachment:fixed tiene bugs en iOS Safari. Al activar esta opción, en dispositivos táctiles el fondo será scroll normal.
+   */
+  disableParallaxOnTouch?: boolean | null;
+  /**
+   * En columnas Bootstrap (sobre 12). El botón ocupa el resto.
+   */
+  textColumns?: ('9' | '8' | '6') | null;
+  paddingY?: ('60' | '90' | '120' | '160') | null;
+  headingFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  headingSize?: ('30' | '36' | '40' | '45' | '50') | null;
+  /**
+   * Color hex o CSS.
+   */
+  headingColor?: string | null;
+  /**
+   * Color con el que se rellena el botón al hacer hover. Por defecto blanco-web (#f3f3f3) como en Minery.
+   */
+  buttonFillColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ctaParallax';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CTAClientesBlock".
+ */
+export interface CTAClientesBlock {
+  /**
+   * Carrusel automático: avanza de logo en logo. Solo se muestran logos enteros (150×150px); los que no caben rotan sin cortarse.
+   */
+  logos?:
+    | {
+        /**
+         * Imagen cuadrada recomendada (ej. 300×300px).
+         */
+        image: number | Media;
+        /**
+         * Ej: "ECIJA Abogados".
+         */
+        alt?: string | null;
+        /**
+         * Si se rellena, el logo será un enlace.
+         */
+        url?: string | null;
+        openInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Dejar vacío para ocultar el enlace.
+   */
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  ctaOpenInNewTab?: boolean | null;
+  /**
+   * Rota los logos de uno en uno cuando hay más de los que caben en pantalla. Si todos caben, se muestran estáticos.
+   */
+  enableCarousel?: boolean | null;
+  /**
+   * Tiempo entre cada cambio de logo.
+   */
+  autoplayDelay?: number | null;
+  transitionSpeed?: number | null;
+  pauseOnHover?: boolean | null;
+  paddingTop?: ('0' | '60' | '100' | '120') | null;
+  paddingBottom?: ('0' | '50' | '80' | '100') | null;
+  /**
+   * Cuánto crece el logo al pasar el ratón.
+   */
+  hoverScale?: ('1.05' | '1.1' | '1.15' | '1.2') | null;
+  backgroundColor?: string | null;
+  ctaColor?: string | null;
+  ctaHoverColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ctaClientes';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2734,6 +3643,94 @@ export interface PagesSelect<T extends boolean = true> {
               eyebrowFontFamily?: T;
               backgroundColor?: T;
             };
+        heroParallax?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                    openInNewTab?: T;
+                  };
+              layers?:
+                | T
+                | {
+                    image?: T;
+                    alt?: T;
+                    speed?: T;
+                    objectFit?: T;
+                    opacity?: T;
+                    id?: T;
+                  };
+              overlayOpacity?: T;
+              height?: T;
+              textAlign?: T;
+            };
+        heroParallax2?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                    openInNewTab?: T;
+                  };
+              leftBgColor?: T;
+              textColor?: T;
+              backgroundImage?: T;
+              layers?:
+                | T
+                | {
+                    image?: T;
+                    alt?: T;
+                    moveValue?: T;
+                    opacity?: T;
+                    id?: T;
+                  };
+              mobileImage?: T;
+              mobileTextAlign?: T;
+              height?: T;
+            };
+        heroParallax3?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              cta?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                    openInNewTab?: T;
+                    baseColor?: T;
+                    fillColor?: T;
+                    textColor?: T;
+                    hoverTextColor?: T;
+                  };
+              leftBackgroundImage?: T;
+              textColor?: T;
+              backgroundImage?: T;
+              backgroundMoveValue?: T;
+              layers?:
+                | T
+                | {
+                    image?: T;
+                    alt?: T;
+                    moveValue?: T;
+                    opacity?: T;
+                    id?: T;
+                  };
+              mobileImage?: T;
+              mobileTextAlign?: T;
+              mobileBackgroundColor?: T;
+              height?: T;
+            };
       };
   layout?:
     | T
@@ -2746,8 +3743,14 @@ export interface PagesSelect<T extends boolean = true> {
         productsBlock?: T | ProductsBlockSelect<T>;
         layoutSoria?: T | LayoutSoriaBlockSelect<T>;
         layoutSoria2?: T | LayoutSoria2BlockSelect<T>;
+        layoutSupport?: T | LayoutSupportBlockSelect<T>;
         locationBlock?: T | LocationBlockSelect<T>;
         serviciosSoria?: T | ServiciosSoriaBlockSelect<T>;
+        servicesGrid?: T | ServicesGridBlockSelect<T>;
+        casosExito?: T | CasosExitoBlockSelect<T>;
+        casosExitoGrids?: T | CasosExitoGridsBlockSelect<T>;
+        ctaParallax?: T | CtaParallaxBlockSelect<T>;
+        ctaClientes?: T | CTAClientesBlockSelect<T>;
         faqs?: T | FAQsBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
       };
@@ -2974,6 +3977,41 @@ export interface LayoutSoria2BlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LayoutSupportBlock_select".
+ */
+export interface LayoutSupportBlockSelect<T extends boolean = true> {
+  imagePosition?: T;
+  image?: T;
+  imageAlt?: T;
+  eyebrow?: T;
+  heading?: T;
+  body?: T;
+  cta?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        openInNewTab?: T;
+      };
+  eyebrowFont?: T;
+  headingFont?: T;
+  bodyFont?: T;
+  backgroundType?: T;
+  backgroundImage?: T;
+  backgroundPosition?: T;
+  backgroundColor?: T;
+  overlayColor?: T;
+  paddingY?: T;
+  eyebrowColor?: T;
+  headingColor?: T;
+  bodyColor?: T;
+  imagePulseColor?: T;
+  enableFadeIn?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "LocationBlock_select".
  */
 export interface LocationBlockSelect<T extends boolean = true> {
@@ -3052,6 +4090,162 @@ export interface ServiciosSoriaBlockSelect<T extends boolean = true> {
   ctaBackgroundColor?: T;
   ctaTextColor?: T;
   ctaFontFamily?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesGridBlock_select".
+ */
+export interface ServicesGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  headerFont?: T;
+  eyebrowColor?: T;
+  headingColor?: T;
+  backgroundColor?: T;
+  services?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        hideDescriptionUntilHover?: T;
+        url?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  cardFont?: T;
+  cardBackground?: T;
+  textColorRest?: T;
+  accentColor?: T;
+  hoverFillColor?: T;
+  textColorHover?: T;
+  accentColorHover?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CasosExitoBlock_select".
+ */
+export interface CasosExitoBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  slides?:
+    | T
+    | {
+        image?: T;
+        imageAlt?: T;
+        company?: T;
+        description?: T;
+        id?: T;
+      };
+  effect?: T;
+  autoplay?: T;
+  autoplayDelay?: T;
+  loop?: T;
+  speed?: T;
+  pauseOnHover?: T;
+  imagePosition?: T;
+  imageSplit?: T;
+  slideMinHeight?: T;
+  sectionBackground?: T;
+  slideBackground?: T;
+  headerFont?: T;
+  slideFont?: T;
+  eyebrowColor?: T;
+  headingColor?: T;
+  companyColor?: T;
+  descriptionColor?: T;
+  dotsColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CasosExitoGridsBlock_select".
+ */
+export interface CasosExitoGridsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  cases?:
+    | T
+    | {
+        image?: T;
+        imageAlt?: T;
+        company?: T;
+        description?: T;
+        url?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  enableAnimation?: T;
+  animationDistance?: T;
+  animationDuration?: T;
+  headerFont?: T;
+  cardFont?: T;
+  sectionBackground?: T;
+  eyebrowColor?: T;
+  headingColor?: T;
+  companyColor?: T;
+  descriptionColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaParallaxBlock_select".
+ */
+export interface CtaParallaxBlockSelect<T extends boolean = true> {
+  heading?: T;
+  cta?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        openInNewTab?: T;
+      };
+  backgroundImage?: T;
+  backgroundPosition?: T;
+  overlayColor?: T;
+  disableParallaxOnTouch?: T;
+  textColumns?: T;
+  paddingY?: T;
+  headingFont?: T;
+  headingSize?: T;
+  headingColor?: T;
+  buttonFillColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CTAClientesBlock_select".
+ */
+export interface CTAClientesBlockSelect<T extends boolean = true> {
+  logos?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        url?: T;
+        openInNewTab?: T;
+        id?: T;
+      };
+  ctaLabel?: T;
+  ctaUrl?: T;
+  ctaOpenInNewTab?: T;
+  enableCarousel?: T;
+  autoplayDelay?: T;
+  transitionSpeed?: T;
+  pauseOnHover?: T;
+  paddingTop?: T;
+  paddingBottom?: T;
+  hoverScale?: T;
+  backgroundColor?: T;
+  ctaColor?: T;
+  ctaHoverColor?: T;
   id?: T;
   blockName?: T;
 }

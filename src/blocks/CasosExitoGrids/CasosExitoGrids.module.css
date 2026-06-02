@@ -1,0 +1,144 @@
+.section {
+  overflow-x: hidden;
+}
+
+/* Mismo ancho y alineación que el grid de 2 columnas → header alinea con la 1ª tarjeta */
+.layout {
+  --card-max-w: 570px;
+  --grid-gap: 1.5rem;
+  --layout-max-w: calc(var(--card-max-w) * 2 + var(--grid-gap));
+
+  width: 100%;
+  max-width: var(--layout-max-w);
+  margin-inline: auto;
+}
+
+.header {
+  width: 100%;
+  max-width: var(--card-max-w);
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 992px) {
+  .header {
+    margin-bottom: 3.5rem;
+  }
+}
+
+.grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr;
+  column-gap: 0;
+  row-gap: 1.5rem;
+  justify-items: stretch;
+}
+
+@media (min-width: 992px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, var(--card-max-w)));
+    column-gap: var(--grid-gap);
+    row-gap: 2rem;
+  }
+}
+
+.card {
+  margin-bottom: 0;
+  width: 100%;
+  max-width: 570px;
+}
+
+/*
+  Imagen: máx. 570 × 380 px
+  Caja texto: máx. 456 × 233 px, encima de la imagen (z-index)
+  Superpone el 10% inferior de la imagen (top: 90% del contenedor imagen)
+  Altura total ≈ 380 + 233 − 38 = 575 px
+*/
+.cardLayout {
+  --image-w: 570px;
+  --image-h: 380px;
+  --text-w: 456px;
+  --text-h: 233px;
+  --overlap: calc(var(--image-h) * 0.1);
+
+  position: relative;
+  width: 100%;
+  max-width: var(--image-w);
+  min-height: calc(var(--image-h) + var(--text-h) - var(--overlap));
+  box-sizing: border-box;
+}
+
+.mediaWrap {
+  position: relative;
+  width: 100%;
+  max-width: var(--image-w);
+  max-height: var(--image-h);
+  aspect-ratio: 570 / 380;
+  overflow: visible;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.textBlock {
+  position: absolute;
+  left: 0;
+  top: 90%;
+  z-index: 1;
+  width: var(--text-w);
+  max-width: calc(100% - 1rem);
+  height: var(--text-h);
+  max-height: var(--text-h);
+  background: var(--caption-bg, #ffffff);
+  padding: 1.25rem 1.5rem 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center center;
+}
+
+.companyRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.accentLine {
+  flex-shrink: 0;
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+}
+
+.company {
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.description {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  overflow: hidden;
+}
+
+.description :global(p) {
+  margin: 0;
+}
+
+.description :global(p + p) {
+  margin-top: 0.5rem;
+}

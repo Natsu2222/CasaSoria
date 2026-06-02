@@ -325,6 +325,10 @@ html[data-theme='light'] {
     animation: payload-block-rise 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
+  .payload-blocks-root .payload-block-slot--bleed {
+    animation: none;
+  }
+
   .payload-blocks-root .payload-block-slot:nth-child(1) {
     animation-delay: 0ms;
   }
@@ -340,6 +344,13 @@ html[data-theme='light'] {
   .payload-blocks-root .payload-block-slot:nth-child(n + 4) {
     animation-delay: 120ms;
   }
+}
+
+/* Full-bleed blocks (e.g. CTA Parallax): edge-to-edge viewport width */
+.payload-blocks-root .payload-block-slot--bleed {
+  width: 100vw;
+  max-width: 100vw;
+  margin-inline: calc(50% - 50vw);
 }
 
 /* MicroVisuals hero: glass + title */
