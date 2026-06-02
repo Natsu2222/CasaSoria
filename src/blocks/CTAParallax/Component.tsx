@@ -43,7 +43,7 @@ function resolveBackgroundUrl(image: Media | number | null | undefined): string 
   return image.url ? getMediaUrl(image.url, image.updatedAt) : null
 }
 
-function hasRichText(value: unknown): boolean {
+function hasRichText(value: unknown): value is DefaultTypedEditorState {
   if (!value || typeof value !== 'object') return false
   const root = (value as { root?: { children?: unknown[] } }).root
   if (!root?.children?.length) return false
