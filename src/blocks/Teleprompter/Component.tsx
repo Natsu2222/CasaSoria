@@ -30,11 +30,11 @@
 
 import React, { useId } from 'react'
 import Image from 'next/image'
-import type { TeleprompterBlock } from '@/payload-types'
+import type { TeleprompterBlock as TeleprompterBlockProps } from '@/payload-types'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-type Props = TeleprompterBlock & { className?: string }
+type Props = TeleprompterBlockProps & { className?: string }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -162,11 +162,12 @@ export const TeleprompterBlock: React.FC<Props> = ({
   const dur = Number(speed ?? 30)
 
   // Separator character
+  const sepType = separatorType ?? 'none'
   const sepChar =
-    separatorType === 'custom'
+    sepType === 'custom'
       ? (separatorCustom ?? '')
-      : separatorType !== 'none'
-      ? (SEPARATORS[separatorType] ?? '')
+      : sepType !== 'none'
+      ? (SEPARATORS[sepType] ?? '')
       : null
 
   // Build list of rendered items (with optional separators between them)
@@ -180,11 +181,11 @@ export const TeleprompterBlock: React.FC<Props> = ({
         iconSize={iSize}
         fontSize={fSize}
         fontWeight={fontWeight ?? '500'}
-        textColor={textColor}
+        textColor={textColor ?? '#ffffff'}
         textTransform={textTransform ?? 'none'}
         letterSpacing={letterSpacing ?? '0'}
         iconTint={iconTint}
-        font={font}
+        font={font ?? 'Montserrat, sans-serif'}
       />
     )
 
@@ -195,7 +196,7 @@ export const TeleprompterBlock: React.FC<Props> = ({
           key={`sep-${i}`}
           aria-hidden="true"
           className="flex-shrink-0 select-none"
-          style={{ color: separatorColor, fontSize: `${fSize}px` }}
+          style={{ color: separatorColor ?? '#FFC950', fontSize: `${fSize}px` }}
         >
           {sepChar}
         </span>,
@@ -214,7 +215,7 @@ export const TeleprompterBlock: React.FC<Props> = ({
     <div
       className={['overflow-hidden relative', className ?? ''].join(' ')}
       style={{
-        backgroundColor,
+        backgroundColor: backgroundColor ?? '#1e1e1c',
         height: `${h}px`,
         borderTop: borderTop ?? undefined,
         borderBottom: borderBottom ?? undefined,
