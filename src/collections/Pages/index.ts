@@ -9,6 +9,8 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { CTAClientesBlock } from '../../blocks/CTAClientes/config'
 import { CtaParallaxBlock } from '../../blocks/CTAParallax/config'
 import { Content } from '../../blocks/Content/config'
+import { ContentImageHoverBlock } from '../../blocks/ContentImageHover/config'
+import { FlexContentBlock } from '../../blocks/FlexContent/config'
 import { FAQsBlock } from '../../blocks/FAQs/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { LayoutSoriaBlock } from '../../blocks/LayoutSoria/config'
@@ -20,6 +22,8 @@ import { ProductsBlock } from '../../blocks/ProductsBlock/config'
 import { ServiciosGridBlock } from '../../blocks/ServiciosGrid/config'
 import { ServiciosSoriaBlock } from '../../blocks/ServiciosSoria/config'
 import { TestimonialsBlock } from '../../blocks/Testimonials/config'
+import { TestimonialsMineryBlock } from '../../blocks/TestimonialsMinery/config'
+import { TeleprompterBlock } from '../../blocks/Teleprompter/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -88,6 +92,7 @@ export const Pages: CollectionConfig<'pages'> = {
               blocks: [
                 CallToAction,
                 Content,
+                ContentImageHoverBlock,
                 MediaBlock,
                 Archive,
                 FormBlock,
@@ -103,7 +108,10 @@ export const Pages: CollectionConfig<'pages'> = {
                 CtaParallaxBlock,
                 CTAClientesBlock,
                 FAQsBlock,
+                FlexContentBlock,
                 TestimonialsBlock,
+                TestimonialsMineryBlock,
+                TeleprompterBlock,
               ],
               required: true,
               admin: {

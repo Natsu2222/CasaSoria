@@ -9,6 +9,8 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { CTAClientesBlockComponent } from '@/blocks/CTAClientes/Component'
 import { CtaParallaxBlock } from '@/blocks/CTAParallax/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
+import { ContentImageHoverBlock } from '@/blocks/ContentImageHover/Component'
+import { FlexContentBlock } from '@/blocks/FlexContent/Component'
 import { FAQsBlock } from '@/blocks/FAQs/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { LayoutSoriaBlock } from '@/blocks/LayoutSoria/Component'
@@ -20,16 +22,20 @@ import { ProductsBlock } from '@/blocks/ProductsBlock/Component'
 import { ServicesGridBlock } from '@/blocks/ServiciosGrid/Component'
 import { ServiciosSoriaBlock } from '@/blocks/ServiciosSoria/Component'
 import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
+import { TestimonialsMineryBlock } from '@/blocks/TestimonialsMinery/Component'
+import { TeleprompterBlock } from '@/blocks/Teleprompter/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
   casosExito: CasosExitoBlock,
   casosExitoGrids: CasosExitoGridsBlock,
   content: ContentBlock,
+  contentImageHover: ContentImageHoverBlock,
   cta: CallToActionBlock,
   ctaClientes: CTAClientesBlockComponent,
   ctaParallax: CtaParallaxBlock,
   faqs: FAQsBlock,
+  flexContent: FlexContentBlock,
   formBlock: FormBlock,
   layoutSoria: LayoutSoriaBlock,
   layoutSoria2: LayoutSoria2Block,
@@ -40,6 +46,8 @@ const blockComponents = {
   serviciosSoria: ServiciosSoriaBlock,
   servicesGrid: ServicesGridBlock,
   testimonials: TestimonialsBlock,
+  testimonialsMinery: TestimonialsMineryBlock,
+  teleprompter: TeleprompterBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -59,7 +67,10 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
-              const isFullBleed = blockType === 'ctaParallax'
+              const isFullBleed =
+                blockType === 'ctaParallax' ||
+                blockType === 'testimonialsMinery' ||
+                blockType === 'teleprompter'
 
               return (
                 <div

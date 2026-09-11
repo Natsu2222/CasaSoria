@@ -22,6 +22,12 @@ import * as migration_20260601_135329_casos_exito_block from './20260601_135329_
 import * as migration_20260601_141650_casos_exito_grids_block from './20260601_141650_casos_exito_grids_block';
 import * as migration_20260602_110158 from './20260602_110158';
 import * as migration_20260602_115048_cta_clientes_block from './20260602_115048_cta_clientes_block';
+import * as migration_20260603_102549 from './20260603_102549';
+import * as migration_20260603_131220 from './20260603_131220';
+import * as migration_20260608_144232_teleprompter_block from './20260608_144232_teleprompter_block';
+import * as migration_20260608_150505_teleprompter_larger_icons from './20260608_150505_teleprompter_larger_icons';
+import * as migration_20260608_151258_teleprompter_xl_icons from './20260608_151258_teleprompter_xl_icons';
+import * as migration_20260616_121420_content_image_hover_block from './20260616_121420_content_image_hover_block';
 
 export const migrations = [
   {
@@ -142,6 +148,36 @@ export const migrations = [
   {
     up: migration_20260602_115048_cta_clientes_block.up,
     down: migration_20260602_115048_cta_clientes_block.down,
-    name: '20260602_115048_cta_clientes_block'
+    name: '20260602_115048_cta_clientes_block',
+  },
+  {
+    up: migration_20260603_102549.up,
+    down: migration_20260603_102549.down,
+    name: '20260603_102549',
+  },
+  {
+    up: migration_20260603_131220.up,
+    down: migration_20260603_131220.down,
+    name: '20260603_131220',
+  },
+  {
+    up: migration_20260608_144232_teleprompter_block.up,
+    down: migration_20260608_144232_teleprompter_block.down,
+    name: '20260608_144232_teleprompter_block',
+  },
+  {
+    up: migration_20260608_150505_teleprompter_larger_icons.up,
+    down: migration_20260608_150505_teleprompter_larger_icons.down,
+    name: '20260608_150505_teleprompter_larger_icons',
+  },
+  {
+    up: migration_20260608_151258_teleprompter_xl_icons.up,
+    down: migration_20260608_151258_teleprompter_xl_icons.down,
+    name: '20260608_151258_teleprompter_xl_icons',
+  },
+  {
+    up: migration_20260616_121420_content_image_hover_block.up,
+    down: migration_20260616_121420_content_image_hover_block.down,
+    name: '20260616_121420_content_image_hover_block'
   },
 ];

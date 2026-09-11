@@ -682,6 +682,7 @@ export interface Page {
   layout: (
     | CallToActionBlock
     | ContentBlock
+    | ContentImageHoverBlock
     | MediaBlock
     | ArchiveBlock
     | FormBlock
@@ -697,7 +698,10 @@ export interface Page {
     | CtaParallaxBlock
     | CTAClientesBlock
     | FAQsBlock
+    | FlexContentBlock
     | TestimonialsBlock
+    | TestimonialsMineryBlock
+    | TeleprompterBlock
   )[];
   meta?: {
     title?: string | null;
@@ -1055,6 +1059,132 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentImageHoverBlock".
+ */
+export interface ContentImageHoverBlock {
+  imagePosition?: ('right' | 'left') | null;
+  /**
+   * Imagen de fondo del compositor (ej. marco o panel). La imagen superior se apila encima.
+   */
+  baseImage: number | Media;
+  baseImageAlt?: string | null;
+  /**
+   * Capa visible encima de la base. Al pasar el cursor, esta imagen escala según el valor configurado.
+   */
+  topImage: number | Media;
+  topImageAlt?: string | null;
+  /**
+   * Factor de escala aplicado a la imagen superior al pasar el cursor.
+   */
+  hoverScale?: ('1.05' | '1.1' | '1.15' | '1.2' | '1.25' | '1.3') | null;
+  hoverDuration?: ('300' | '600' | '900' | '1200') | null;
+  heading: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  subheading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  headingFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  subheadingFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  descriptionFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  /**
+   * Color hex o CSS.
+   */
+  headingColor?: string | null;
+  /**
+   * Color hex o CSS.
+   */
+  subheadingColor?: string | null;
+  /**
+   * Color hex o CSS.
+   */
+  descriptionColor?: string | null;
+  /**
+   * Color hex o CSS.
+   */
+  backgroundColor?: string | null;
+  paddingY?: ('80' | '100' | '120' | '160' | '200') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contentImageHover';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2970,6 +3100,173 @@ export interface FAQsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlexContentBlock".
+ */
+export interface FlexContentBlock {
+  /**
+   * Ej: "SEGURIDAD DIGITAL". Dejar vacío para ocultar.
+   */
+  eyebrow?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Título principal de la sección.
+   */
+  heading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Ej: "Ponemos a prueba tus equipos...". Dejar vacío para ocultar.
+   */
+  subheading?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Párrafos de contenido. Soporta negritas, links, listas, etc.
+   */
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Dejar vacío para no mostrar el botón.
+   */
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  ctaOpenInNewTab?: boolean | null;
+  ctaStyle?: ('btnNegro' | 'animatedLine') | null;
+  /**
+   * Color con el que se rellena el botón al hacer hover.
+   */
+  buttonFillColor?: string | null;
+  buttonTextColor?: string | null;
+  buttonBorderColor?: string | null;
+  /**
+   * Si no se añade imagen, el bloque muestra solo el texto centrado.
+   */
+  image?: (number | null) | Media;
+  imageAlt?: string | null;
+  imagePosition?: ('right' | 'left' | 'top' | 'bottom') | null;
+  /**
+   * El texto ocupará el porcentaje restante.
+   */
+  imageWidthPercent?: ('25' | '33' | '40' | '50' | '60' | '66' | '75') | null;
+  imageVerticalAlign?: ('start' | 'center' | 'end') | null;
+  imageObjectFit?: ('cover' | 'contain') | null;
+  imageRounded?: boolean | null;
+  /**
+   * Como en la sección de Auditorías de Minery, donde aparecen dos imágenes apiladas.
+   */
+  secondImage?: (number | null) | Media;
+  secondImageAlt?: string | null;
+  backgroundType?: ('color' | 'image') | null;
+  backgroundColor?: string | null;
+  backgroundImage?: (number | null) | Media;
+  backgroundPosition?: ('center center' | 'center top' | 'center bottom' | 'left center' | 'right center') | null;
+  /**
+   * Ej: rgba(0,0,0,0.4). Dejar vacío para sin overlay.
+   */
+  overlayColor?: string | null;
+  paddingTop?: ('0' | '40' | '60' | '80' | '100' | '120') | null;
+  paddingBottom?: ('0' | '40' | '60' | '80' | '100' | '120') | null;
+  /**
+   * Cuando no hay imagen, el texto se centra automáticamente si se elige "Centro".
+   */
+  textAlign?: ('left' | 'center' | 'right') | null;
+  /**
+   * Solo aplica cuando la imagen está a izquierda o derecha.
+   */
+  verticalAlign?: ('start' | 'center' | 'end') | null;
+  columnGap?: ('16' | '32' | '48' | '64' | '80') | null;
+  headingFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  bodyFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  headingSize?: ('24' | '28' | '32' | '36' | '40' | '48') | null;
+  subheadingSize?: ('16' | '18' | '20' | '22' | '24' | '28') | null;
+  eyebrowColor?: string | null;
+  headingColor?: string | null;
+  subheadingColor?: string | null;
+  bodyColor?: string | null;
+  /**
+   * Línea horizontal de 54px que precede al texto del eyebrow.
+   */
+  eyebrowLineColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'flexContent';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TestimonialsBlock".
  */
 export interface TestimonialsBlock {
@@ -3218,6 +3515,223 @@ export interface TestimonialsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsMineryBlock".
+ */
+export interface TestimonialsMineryBlock {
+  /**
+   * Slider de 1 en 1 con flechas prev/next. Cada testimonio: cita, foto del autor, nombre y cargo.
+   */
+  testimonials?:
+    | {
+        /**
+         * Texto del testimonio. Se mostrará bajo el icono de comillas.
+         */
+        quote: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        /**
+         * Imagen cuadrada (ej. 300×300px). Se muestra circular.
+         */
+        founderImage?: (number | null) | Media;
+        /**
+         * Ej: "Óliver"
+         */
+        founderName: string;
+        /**
+         * Ej: "CEO de Flexicar"
+         */
+        founderRole?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Imagen grande (mín. 1920px). El fondo queda fijo mientras se hace scroll — efecto parallax CSS.
+   */
+  backgroundImage?: (number | null) | Media;
+  backgroundPosition?: ('center center' | 'center top' | 'center bottom' | 'left center' | 'right center') | null;
+  /**
+   * Ej: rgba(0,0,0,0.5). Dejar vacío para sin overlay.
+   */
+  overlayColor?: string | null;
+  disableParallaxOnTouch?: boolean | null;
+  /**
+   * Por defecto el slider es manual (solo flechas), igual que Minery.
+   */
+  enableAutoplay?: boolean | null;
+  autoplayDelay?: number | null;
+  transitionSpeed?: number | null;
+  loop?: boolean | null;
+  paddingY?: ('60' | '90' | '120' | '160') | null;
+  founderImageSize?: ('50' | '70' | '90' | '110') | null;
+  quoteFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  founderFont?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  /**
+   * Color del SVG de comillas decorativas.
+   */
+  quoteIconColor?: string | null;
+  quoteTextColor?: string | null;
+  founderNameColor?: string | null;
+  founderRoleColor?: string | null;
+  /**
+   * Color de las flechas prev/next en reposo.
+   */
+  arrowColor?: string | null;
+  arrowHoverColor?: string | null;
+  arrowBorderColor?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonialsMinery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeleprompterBlock".
+ */
+export interface TeleprompterBlock {
+  /**
+   * Cada ítem puede ser texto, icono + texto, o solo icono. Los ítems se duplican automáticamente para el loop infinito.
+   */
+  items?:
+    | {
+        /**
+         * Dejar vacío si solo quieres mostrar el icono.
+         */
+        text?: string | null;
+        /**
+         * SVG o PNG. Se muestra a la izquierda del texto.
+         */
+        icon?: (number | null) | Media;
+        iconAlt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  separatorType?: ('none' | 'dot' | 'pipe' | 'diamond' | 'dash' | 'arrow' | 'custom') | null;
+  /**
+   * Cualquier carácter o emoji. Ej: ★ / ✦ / ➤
+   */
+  separatorCustom?: string | null;
+  separatorColor?: string | null;
+  direction?: ('left' | 'right') | null;
+  /**
+   * Menor número = más rápido. 30s ≈ velocidad moderada. El ciclo se ajusta automáticamente según el número de ítems.
+   */
+  speed?: number | null;
+  pauseOnHover?: boolean | null;
+  height?:
+    | (
+        | '40'
+        | '60'
+        | '80'
+        | '100'
+        | '120'
+        | '160'
+        | '200'
+        | '240'
+        | '280'
+        | '320'
+        | '360'
+        | '400'
+        | '480'
+        | '560'
+        | '640'
+      )
+    | null;
+  itemGap?: ('16' | '24' | '32' | '48' | '64' | '80' | '96' | '128' | '160' | '200') | null;
+  iconSize?:
+    | (
+        | '48'
+        | '64'
+        | '80'
+        | '96'
+        | '128'
+        | '160'
+        | '192'
+        | '224'
+        | '256'
+        | '288'
+        | '320'
+        | '360'
+        | '400'
+        | '480'
+        | '560'
+        | '640'
+      )
+    | null;
+  fontSize?: ('12' | '14' | '16' | '18' | '20' | '24' | '28' | '32') | null;
+  fontWeight?: ('400' | '500' | '600' | '700' | '800') | null;
+  font?:
+    | (
+        | 'Montserrat, sans-serif'
+        | 'Inter, sans-serif'
+        | 'Roboto, sans-serif'
+        | 'Lato, sans-serif'
+        | 'Open Sans, sans-serif'
+        | 'Raleway, sans-serif'
+        | 'Poppins, sans-serif'
+        | 'Playfair Display, serif'
+        | 'Georgia, serif'
+      )
+    | null;
+  textTransform?: ('none' | 'uppercase' | 'lowercase' | 'capitalize') | null;
+  letterSpacing?: ('0' | '1' | '2' | '3') | null;
+  /**
+   * Color hex o CSS. Ej: #1e1e1c, #FFC950, transparent.
+   */
+  backgroundColor?: string | null;
+  textColor?: string | null;
+  /**
+   * Ej: "brightness(0) invert(1)" para iconos blancos. Dejar vacío para usar el color original del icono.
+   */
+  iconTint?: string | null;
+  /**
+   * Ej: "1px solid rgba(255,255,255,0.15)". Dejar vacío para ninguno.
+   */
+  borderTop?: string | null;
+  /**
+   * Ej: "1px solid rgba(255,255,255,0.15)".
+   */
+  borderBottom?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'teleprompter';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3737,6 +4251,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
+        contentImageHover?: T | ContentImageHoverBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
@@ -3752,7 +4267,10 @@ export interface PagesSelect<T extends boolean = true> {
         ctaParallax?: T | CtaParallaxBlockSelect<T>;
         ctaClientes?: T | CTAClientesBlockSelect<T>;
         faqs?: T | FAQsBlockSelect<T>;
+        flexContent?: T | FlexContentBlockSelect<T>;
         testimonials?: T | TestimonialsBlockSelect<T>;
+        testimonialsMinery?: T | TestimonialsMineryBlockSelect<T>;
+        teleprompter?: T | TeleprompterBlockSelect<T>;
       };
   meta?:
     | T
@@ -3827,6 +4345,32 @@ export interface ContentBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentImageHoverBlock_select".
+ */
+export interface ContentImageHoverBlockSelect<T extends boolean = true> {
+  imagePosition?: T;
+  baseImage?: T;
+  baseImageAlt?: T;
+  topImage?: T;
+  topImageAlt?: T;
+  hoverScale?: T;
+  hoverDuration?: T;
+  heading?: T;
+  subheading?: T;
+  description?: T;
+  headingFont?: T;
+  subheadingFont?: T;
+  descriptionFont?: T;
+  headingColor?: T;
+  subheadingColor?: T;
+  descriptionColor?: T;
+  backgroundColor?: T;
+  paddingY?: T;
   id?: T;
   blockName?: T;
 }
@@ -4285,6 +4829,53 @@ export interface FAQsBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlexContentBlock_select".
+ */
+export interface FlexContentBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subheading?: T;
+  body?: T;
+  ctaLabel?: T;
+  ctaUrl?: T;
+  ctaOpenInNewTab?: T;
+  ctaStyle?: T;
+  buttonFillColor?: T;
+  buttonTextColor?: T;
+  buttonBorderColor?: T;
+  image?: T;
+  imageAlt?: T;
+  imagePosition?: T;
+  imageWidthPercent?: T;
+  imageVerticalAlign?: T;
+  imageObjectFit?: T;
+  imageRounded?: T;
+  secondImage?: T;
+  secondImageAlt?: T;
+  backgroundType?: T;
+  backgroundColor?: T;
+  backgroundImage?: T;
+  backgroundPosition?: T;
+  overlayColor?: T;
+  paddingTop?: T;
+  paddingBottom?: T;
+  textAlign?: T;
+  verticalAlign?: T;
+  columnGap?: T;
+  headingFont?: T;
+  bodyFont?: T;
+  headingSize?: T;
+  subheadingSize?: T;
+  eyebrowColor?: T;
+  headingColor?: T;
+  subheadingColor?: T;
+  bodyColor?: T;
+  eyebrowLineColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TestimonialsBlock_select".
  */
 export interface TestimonialsBlockSelect<T extends boolean = true> {
@@ -4320,6 +4911,77 @@ export interface TestimonialsBlockSelect<T extends boolean = true> {
   arrowBackgroundColor?: T;
   dotColor?: T;
   dotActiveColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsMineryBlock_select".
+ */
+export interface TestimonialsMineryBlockSelect<T extends boolean = true> {
+  testimonials?:
+    | T
+    | {
+        quote?: T;
+        founderImage?: T;
+        founderName?: T;
+        founderRole?: T;
+        id?: T;
+      };
+  backgroundImage?: T;
+  backgroundPosition?: T;
+  overlayColor?: T;
+  disableParallaxOnTouch?: T;
+  enableAutoplay?: T;
+  autoplayDelay?: T;
+  transitionSpeed?: T;
+  loop?: T;
+  paddingY?: T;
+  founderImageSize?: T;
+  quoteFont?: T;
+  founderFont?: T;
+  quoteIconColor?: T;
+  quoteTextColor?: T;
+  founderNameColor?: T;
+  founderRoleColor?: T;
+  arrowColor?: T;
+  arrowHoverColor?: T;
+  arrowBorderColor?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeleprompterBlock_select".
+ */
+export interface TeleprompterBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        text?: T;
+        icon?: T;
+        iconAlt?: T;
+        id?: T;
+      };
+  separatorType?: T;
+  separatorCustom?: T;
+  separatorColor?: T;
+  direction?: T;
+  speed?: T;
+  pauseOnHover?: T;
+  height?: T;
+  itemGap?: T;
+  iconSize?: T;
+  fontSize?: T;
+  fontWeight?: T;
+  font?: T;
+  textTransform?: T;
+  letterSpacing?: T;
+  backgroundColor?: T;
+  textColor?: T;
+  iconTint?: T;
+  borderTop?: T;
+  borderBottom?: T;
   id?: T;
   blockName?: T;
 }
